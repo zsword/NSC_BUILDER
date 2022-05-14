@@ -16,8 +16,8 @@
 		}
 	</style>
     <script type="text/javascript" src="/eel.js"></script>
-    <script type="text/javascript" src="https://raw.githubusercontent.com/eligrey/FileSaver.js/master/src/FileSaver.js"></script>	
-	<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/underscore@1.11.0/underscore-min.js"></script> 
+    <script type="text/javascript" src="js/FileSaver.js"></script>	
+	<script type="text/javascript" src="js/underscore-min.js"></script> 
 	
 	<script>
 		document.addEventListener("DOMContentLoaded", function() {
@@ -311,7 +311,8 @@ document.getElementById("collapse_toggle_2").click();
 
 async function start(){
 	show_gameinfo()
-	var fname=await eel.getfname()();
+	//var fname=await eel.getfname()();
+	var fname="D:/NSCB_temp/calculate.xci"
 	if (fname!=null && fname!=""){
 		<!-- console.log(fname); -->
 		resetInfo()
@@ -351,6 +352,7 @@ async function start_from_remote_library(data){
 }
 
 async function start2(fname){
+	try {
 	eel.call_showicon(fname)
 	eel.call_getinfo(fname)
 	eel.call_get_adv_filelist(fname)
@@ -358,6 +360,9 @@ async function start2(fname){
 	eel.call_get_npdm_data(fname)
 	eel.call_get_cnmt_data(fname)
 	eel.call_get_verification_data(fname)
+	}catch(e) {
+		console.error(e)
+	}
 }
 
 function onStartedDownload(id) {

@@ -1,0 +1,47 @@
+{
+    // 使用 IntelliSense 了解相关属性。 
+    // 悬停以查看现有属性的描述。
+    // 欲了解更多信息，请访问: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Python: lib nutdb",
+            "type": "python",
+            "request": "launch",
+            "program": "${file}",
+            "args": ["-lib_call", "nutdb", "check_files"],
+            "console": "integratedTerminal",
+            "justMyCode": true
+        },
+        {
+            "name": "Python: squirrel mlist",
+            "type": "python",
+            "request": "launch",
+            "program": "${file}",
+            "args": ["-t", "nsp", "xci", "nsz", "xcz", "-tfile", "./mlist.txt", "-uin", "D:/XCI", "-ff", "D:/XCI"],
+            "console": "integratedTerminal",
+            "justMyCode": true
+        },
+        {
+            "name": "Python: squirrel xci",
+            "type": "python",
+            "request": "launch",
+            "cwd": "${workspaceFolder}/py/ztools/",
+            "program": "squirrel.py",
+            "args": ["-b", "65536", "-pv", "11", "-kp", "11", "--RSVcap", "605028352", "-fat", "exfat", "-fx", "files", "-ND", "true",
+                "-t", "xci", "-o", "D:\\NSCB_temp", "-tfile", "./mlist.txt", "-roma", "TRUE", "-dmul", "\"calculate\""],
+            "console": "integratedTerminal",
+            "justMyCode": true
+        },
+        {
+            "name": "Python: squirrel Interface",
+            "type": "python",
+            "request": "launch",
+            "cwd": "${workspaceFolder}/py/ztools/",
+            "program": "squirrel.py",
+            "args": ["-lib_call", "Interface", "start", "-xarg", "chrome", "true", "800", "740", "rg8000", "localhost"],
+            "console": "integratedTerminal",
+            "justMyCode": true
+        }
+    ]
+}

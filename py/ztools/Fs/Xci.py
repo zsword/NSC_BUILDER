@@ -7289,6 +7289,12 @@ class Xci(File):
 								if metapatch == 'true' or keypatch != 'false':
 									target = Fs.Nca(metafile, 'r+b')
 									target.rewind()
+									header = target.header
+									titleId = header.titleId									
+									programSDKversion,dataSDKversion=self.getsdkvertit(titleId)
+									SDK_RSV, RRSV = sq_tools.transform_fw_string(programSDKversion)
+									if SDK_RSV > int(RSV_cap):
+										RSV_cap	= str(SDK_RSV)
 									if 	str(target.header.contentType) == 'Content.META':
 										for pfs0 in target:
 											for cnmt in pfs0:
