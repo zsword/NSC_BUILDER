@@ -207,7 +207,7 @@ class BaseFile:
 		if path != None:
 			if self.isOpen():
 				self.close()
-				
+
 			if isinstance(path, str):
 				self.f = open(path, mode)
 				self._path = path

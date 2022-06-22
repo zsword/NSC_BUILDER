@@ -5170,22 +5170,31 @@ if __name__ == '__main__':
 			if re.search(r'^[A-Fa-f0-9]+$', args.info.strip(), re.I | re.M | re.S):
 				Print.info('%s version = %s' % (args.info.upper(), CDNSP.get_version(args.info.lower())))
 			else:
-				f = Fs.factory(args.info)
-				f.open(args.info, 'r+b')
-				f.printInfo()
-				'''
-				for i in f.cnmt():
-					for j in i:
-						Print.info(j._path)
-						j.rewind()
-						buf = j.read()
-						Hex.dump(buf)
-						j.seek(0x28)
-						#j.writeInt64(0)
-						Print.info('min: ' + str(j.readInt64()))
-				#f.flush()
-				#f.close()
-				'''
+				path = args.info
+				if os.path.isdir(path):
+					for filename in os.listdir(path):
+						fp = os.path.join(path, filename)
+						Print.info("FileInfo: "+fp)
+						f = Fs.factory(fp)
+						f.open(fp, 'r+b')
+						f.printInfo()
+				else:
+					f = Fs.factory(args.info)
+					f.open(args.info, 'r+b')
+					f.printInfo()
+					'''
+					for i in f.cnmt():
+						for j in i:
+							Print.info(j._path)
+							j.rewind()
+							buf = j.read()
+							Hex.dump(buf)
+							j.seek(0x28)
+							#j.writeInt64(0)
+							Print.info('min: ' + str(j.readInt64()))
+					#f.flush()
+					#f.close()
+					'''
 			Status.close()
 		# ...................................................
 		# Read ncap inside nsp or xci
