@@ -17,8 +17,10 @@
             "name": "Python: squirrel mlist",
             "type": "python",
             "request": "launch",
-            "program": "${file}",
-            "args": ["-t", "nsp", "xci", "nsz", "xcz", "-tfile", "./mlist.txt", "-uin", "D:/XCI", "-ff", "D:/XCI"],
+            "cwd": "${workspaceFolder}/py/ztools/",
+            "program": "squirrel.py",
+            "args1": ["-t", "nsp", "xci", "nsz", "xcz", "-tfile", "./mlist.txt", "-uin", "D:/XCI", "-ff", "D:/XCI"],
+            "args": ["-t", "nsp", "xci", "nsz", "xcz", "-tfile", "./mlist.txt", "-uin", "/usr/soft/xci", "-ff", "/usr/soft/xci"],
             "console": "integratedTerminal",
             "justMyCode": true
         },
@@ -28,8 +30,10 @@
             "request": "launch",
             "cwd": "${workspaceFolder}/py/ztools/",
             "program": "squirrel.py",
-            "args": ["-b", "65536", "-pv", "11", "-kp", "11", "--RSVcap", "605028352", "-fat", "exfat", "-fx", "files", "-ND", "true",
+            "args1": ["-b", "65536", "-pv", "11", "-kp", "11", "--RSVcap", "605028352", "-fat", "exfat", "-fx", "files", "-ND", "true",
                 "-t", "xci", "-o", "D:\\NSCB_temp", "-tfile", "./mlist.txt", "-roma", "TRUE", "-dmul", "\"calculate\""],
+            "args": ["-b", "65536", "-pv", "11", "-kp", "11", "--RSVcap", "605028352", "-fat", "exfat", "-fx", "files", "-ND", "true",
+                    "-t", "xci", "-o", "/usr/soft/NSCB_temp", "-tfile", "./mlist.txt", "-roma", "TRUE", "-dmul", "\"calculate\""],
             "console": "integratedTerminal",
             "justMyCode": true
         },
@@ -42,6 +46,28 @@
             "args": ["-lib_call", "Interface", "start", "-xarg", "chrome", "true", "800", "740", "rg8000", "localhost"],
             "console": "integratedTerminal",
             "justMyCode": true
-        }
+        },
+        {
+            "name": "Python: file info",
+            "type": "python",
+            "request": "launch",
+            "cwd": "${workspaceFolder}/py/ztools/",
+            "program": "squirrel.py",
+            "args1": ["-i", "/usr/soft/xci/Burger Bistro Story 01004A30149A6000v0US.nsp"],
+            "args": ["-i", "/usr/soft/xci/DEADCRAFT 010088F01599C800v65536.nsz"],
+            "console": "integratedTerminal",
+            "justMyCode": true
+        },
+        {
+            "name": "Python: file list",
+            "type": "python",
+            "request": "launch",
+            "cwd": "${workspaceFolder}/py/ztools/",
+            "program": "squirrel.py",
+            "args1": ["--filelist", "/usr/soft/xci/Burger Bistro Story 01004A30149A6000v0US.nsp"],
+            "args": ["--filelist", "/usr/soft/xci/DEADCRAFT 010088F01599C800v65536.nsz"],            
+            "console": "integratedTerminal",
+            "justMyCode": true
+        },
     ]
 }

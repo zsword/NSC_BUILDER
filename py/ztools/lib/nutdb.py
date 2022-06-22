@@ -1,3 +1,4 @@
+from ssl import SSLError
 from urllib.request import urlopen
 import requests
 try:
@@ -123,7 +124,7 @@ apivjson=os.path.join(DATABASE_folder,'apiv.json')
 
 def get_apivjson():
 	try:
-		response = requests.get('http://tinfoil.io/Api/patches/get', stream=True)
+		response = requests.get('http://tinfoil.io/Api/patches/get', stream=True, verify=False)
 	except BaseException as e:
 		Print.error('Exception: ' + str(e))		
 	if '<Response [404]>'!=str(response):
@@ -151,7 +152,7 @@ def get_DBfolder():
 	
 def getnutdb():
 	try:
-		response = requests.get(json_url, stream=True)
+		response = requests.get(json_url, stream=True, verify=False)
 	except BaseException as e:
 		Print.error('Exception: ' + str(e))	
 	if '<Response [404]>'!=str(response):
@@ -159,8 +160,9 @@ def getnutdb():
 		try:
 			with open(tempfile,'wb') as nutfile:
 				print('Getting NUTDB json')
-				for data in response.iter_content(65536):
+				for data in response.iter_content(1024*100):
 					nutfile.write(data)
+					Print.info(str(data))
 					if not data:
 						break
 			with open(tempfile) as json_file:					
@@ -171,8 +173,9 @@ def getnutdb():
 			try:os.remove(tempfile)
 			except:pass	
 		except:
+			Print.warning('Failed Getting: '+json_url)
 			try:
-				response = requests.get(json_url_mirror, stream=True)
+				response = requests.get(json_url_mirror, stream=True, verify=False)
 			except BaseException as e:
 				Print.error('Exception: ' + str(e))					
 			if '<Response [404]>'!=str(response):
@@ -207,7 +210,7 @@ def getnutdb():
 				return False	
 	else:
 		try:
-			response = requests.get(json_url_mirror, stream=True)
+			response = requests.get(json_url_mirror, stream=True, verify=False)
 		except BaseException as e:
 			Print.error('Exception: ' + str(e))	
 		if '<Response [404]>'!=str(response):
@@ -258,7 +261,7 @@ def regionurl(region):
 					url=str(row[weburl])
 					break
 	try:
-		response = requests.get(url, stream=True)
+		response = requests.get(url, stream=True, verify=False)
 	except BaseException as e:
 		Print.error('Exception: ' + str(e))
 	if '<Response [404]>'!=str(response):
@@ -467,7 +470,7 @@ def get_otherDB(dbfile,dbname,f,URL=None):
 		url=URL
 	_dbfile_=os.path.join(DATABASE_folder,f)
 	try:
-		response = requests.get(url, stream=True)
+		response = requests.get(url, stream=True, verify=False)
 	except BaseException as e:
 		Print.error('Exception: ' + str(e))
 	if '<Response [404]>'!=str(response):	
@@ -496,7 +499,7 @@ def get_otherDB(dbfile,dbname,f,URL=None):
 		URL=url
 		_dbfile_=os.path.join(DATABASE_folder,f)
 		try:
-			response = requests.get(url, stream=True)
+			response = requests.get(url, stream=True, verify=False)
 		except BaseException as e:
 			Print.error('Exception: ' + str(e))
 		if '<Response [404]>'!=str(response):	
@@ -830,7 +833,7 @@ def get_regionDB(region):
 	f='nutdb_'+region+'.json'
 	regionfile=os.path.join(DATABASE_folder,f)
 	try:
-		response = requests.get(url, stream=True)
+		response = requests.get(url, stream=True, verify=False)
 	except BaseException as e:
 		Print.error('Exception: ' + str(e))			
 	if '<Response [404]>'!=str(response):	
@@ -852,7 +855,7 @@ def get_regionDB(region):
 		except:
 			url.replace("blawar","julesontheroad")
 			try:
-				response = requests.get(url, stream=True)
+				response = requests.get(url, stream=True, verify=False)
 			except BaseException as e:
 				Print.error('Exception: ' + str(e))	
 			if '<Response [404]>'!=str(response):	

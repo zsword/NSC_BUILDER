@@ -1,5 +1,5 @@
 NAME|URL|REFRESH(h)|REFRESH(m)|REFRESH(s)
-TITLES|https://raw.githubusercontent.com/blawar/titledb/master/titles.US.en.json|9999|0|0
+TITLES|https://raw.githubusercontent.com/blawar/titledb/master/US.en.json|9999|0|0
 VERSIONS|https://raw.githubusercontent.com/blawar/titledb/master/versions.json|9999|0|0
 VERSIONS_TXT|https://raw.githubusercontent.com/julesontheroad/titledb/master/nutdb_versions.txt|9999|0|0
 CHEATS|https://raw.githubusercontent.com/blawar/titledb/master/cheats.json|9999|0|0

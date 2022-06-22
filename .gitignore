@@ -84,3 +84,4 @@ py/ztools/dev_keys.txt
 py/ztools/lib/Install_server.py
 py/ztools/lib/plaintext.py
 /.project
+/.idea/
