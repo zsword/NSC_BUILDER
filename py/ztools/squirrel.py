@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+# cython:language_level=3
 
 '''
    _____			 _				__
@@ -43,7 +44,8 @@ import sq_settings
 sq_settings.set_prod_environment()
 import Keys
 import Config
-import Status	
+import Status
+import CDNSP
 
 # SET ENVIRONMENT
 squirrel_dir=os.path.abspath(os.curdir)
@@ -2344,9 +2346,9 @@ if __name__ == '__main__':
 							vskip=True
 						else:
 							if sys.platform == 'win32':
-								 v_drive, v_path = os.path.splitdrive(endfile)
+								v_drive, v_path = os.path.splitdrive(endfile)
 							else:
-								 v_drive = os.path.dirname(os.path.abspath(endfile))
+								v_drive = os.path.dirname(os.path.abspath(endfile))
 							dsktotal, dskused, dskfree=disk_usage(str(v_drive))
 							if int(dskfree)<int(totSize):
 								sys.exit("Warning disk space lower than required size. Program will exit")
@@ -2419,9 +2421,9 @@ if __name__ == '__main__':
 							vskip=True
 						else:
 							if sys.platform == 'win32':
-								 v_drive, v_path = os.path.splitdrive(endfile)
+								v_drive, v_path = os.path.splitdrive(endfile)
 							else:
-								 v_drive = os.path.dirname(os.path.abspath(endfile))
+								v_drive = os.path.dirname(os.path.abspath(endfile))
 							dsktotal, dskused, dskfree=disk_usage(str(v_drive))
 							if int(dskfree)<int(totSize):
 								sys.exit("Warning disk space lower than required size. Program will exit")						
@@ -4223,9 +4225,9 @@ if __name__ == '__main__':
 									shutil.move(filename,ofolder)
 						shutil.rmtree(afolder, ignore_errors=True)
 					if sys.platform == 'win32':
-						 v_drive, v_path = os.path.splitdrive(endfile)
+						v_drive, v_path = os.path.splitdrive(endfile)
 					else:
-						 v_drive = os.path.dirname(os.path.abspath(endfile))
+						v_drive = os.path.dirname(os.path.abspath(endfile))
 					dsktotal, dskused, dskfree=disk_usage(str(v_drive))
 					if int(dskfree)<int(totSize):
 						sys.exit("Warning disk space lower than required size. Program will exit")					
@@ -4311,9 +4313,9 @@ if __name__ == '__main__':
 					#print(str(totSize))
 					c=0
 					if sys.platform == 'win32':
-						 v_drive, v_path = os.path.splitdrive(endfile)
+						v_drive, v_path = os.path.splitdrive(endfile)
 					else:
-						 v_drive = os.path.dirname(os.path.abspath(endfile))
+						v_drive = os.path.dirname(os.path.abspath(endfile))
 					dsktotal, dskused, dskfree=disk_usage(str(v_drive))
 					if int(dskfree)<int(totSize):
 						sys.exit("Warning disk space lower than required size. Program will exit")					
@@ -4430,9 +4432,9 @@ if __name__ == '__main__':
 						shutil.rmtree(afolder, ignore_errors=True)
 					#print(str(totSize))
 					if sys.platform == 'win32':
-						 v_drive, v_path = os.path.splitdrive(endfile)
+						v_drive, v_path = os.path.splitdrive(endfile)
 					else:
-						 v_drive = os.path.dirname(os.path.abspath(endfile))
+						v_drive = os.path.dirname(os.path.abspath(endfile))
 					dsktotal, dskused, dskfree=disk_usage(str(v_drive))	
 					if int(dskfree)<int(totSize):
 						sys.exit("Warning disk space lower than required size. Program will exit")					
@@ -4689,9 +4691,9 @@ if __name__ == '__main__':
 				Print.error('Exception: ' + str(e))
 			totSize = sum(os.path.getsize(file) for file in file_list)
 			if sys.platform == 'win32':
-				 v_drive, v_path = os.path.splitdrive(outfile)
+				v_drive, v_path = os.path.splitdrive(outfile)
 			else:
-				 v_drive = os.path.dirname(os.path.abspath(outfile))
+				v_drive = os.path.dirname(os.path.abspath(outfile))
 			dsktotal, dskused, dskfree=disk_usage(str(v_drive))
 			if int(dskfree)<int(totSize):
 				sys.exit("Warning disk space lower than required size. Program will exit")				
@@ -5413,9 +5415,9 @@ if __name__ == '__main__':
 							buf=buffer
 						#print(filepath)
 						if sys.platform == 'win32':
-							 v_drive, v_path = os.path.splitdrive(filepath)
+							v_drive, v_path = os.path.splitdrive(filepath)
 						else:
-							 v_drive = os.path.dirname(os.path.abspath(filepath))
+							v_drive = os.path.dirname(os.path.abspath(filepath))
 						dsktotal, dskused, dskfree=disk_usage(str(v_drive))
 						if int(dskfree)<int(s):
 							sys.exit("Warning disk space lower than required size. Program will exit")							
@@ -5465,9 +5467,9 @@ if __name__ == '__main__':
 							buf=buffer
 						#print(filepath)
 						if sys.platform == 'win32':
-							 v_drive, v_path = os.path.splitdrive(filepath)
+							v_drive, v_path = os.path.splitdrive(filepath)
 						else:
-							 v_drive = os.path.dirname(os.path.abspath(filepath))
+							v_drive = os.path.dirname(os.path.abspath(filepath))
 						dsktotal, dskused, dskfree=disk_usage(str(v_drive))
 						if int(dskfree)<int(s):
 							sys.exit("Warning disk space lower than required size. Program will exit")					
@@ -7286,7 +7288,7 @@ if __name__ == '__main__':
 					if ctitl=='DLC' or ctitl=='-':
 						ctitl=''
 				elif dlcid !="":
-					ctitl=get_title
+					ctitl=f.get_title(dlcid)
 					if dlcfile.endswith('.xci'):
 						f = Fs.Xci(dlcfile)
 					elif dlcfile.endswith('.nsp'):

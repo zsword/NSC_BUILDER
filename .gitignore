@@ -85,3 +85,5 @@ py/ztools/lib/Install_server.py
 py/ztools/lib/plaintext.py
 /.project
 /.idea/
+/py/ztools/build/squirrel/
+/py/ztools/dist/
