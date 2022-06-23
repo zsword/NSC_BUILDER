@@ -3,6 +3,9 @@
 
 import os, sys
 import io
+import traceback
+
+import Print
 import re
 from binascii import hexlify as hx, unhexlify as uhx
 from struct import pack as pk, unpack as upk
@@ -135,3 +138,13 @@ class FileInContainer(io.BufferedReader):
 	def close(self):
 		# File of container is closed along with this object
 		return
+
+LOG_LEVEL=0
+
+def logError(e):
+	if LOG_LEVEL<1:
+		#s = sys.exc_info()
+		#Print.info(s[0]+', '+s[1]+', '+s[2].tb_lineno)
+		traceback.print_exc()
+	else:
+		Print.error('Exception: ' + str(e))

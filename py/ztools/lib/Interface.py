@@ -75,8 +75,10 @@ if sys.platform in ['win32', 'win64']:
 	chromiumpath_alt=os.path.join(chromiumpath_alt,chrom)
 else:
 	chromiumdir=os.path.join(ztools_dir, 'chromium')
-	chromiumpath=os.path.join(chromiumdir, 'chrome')	
-
+	chromiumpath=os.path.join(chromiumdir, 'chrome')
+if not os.path.exists(chromiumpath):
+	chromiumdir='/usr/bin/'
+	chromiumpath=os.path.join(chromiumdir, 'chromium')
 
 local_lib_file = os.path.join(zconfig_dir, 'local_libraries.txt')
 remote_lib_file = os.path.join(zconfig_dir, 'remote_libraries.txt')
@@ -499,7 +501,8 @@ def getfname():
 			]
 	)	
 	print('\nLoaded: '+filename)
-	sys.stdout.flush()	
+	sys.stdout.flush()
+	eel.startLoad(filename)
 	return str(filename)
 	
 @eel.expose
@@ -964,7 +967,7 @@ def getinfo(filename,remotelocation=False):
 	try:
 		f.flush()
 		f.close()			
-	except:pass	
+	except:pass
 	eel.setInfo(send_)
 	return
 	

@@ -26,7 +26,7 @@
 		});
 	</script>
 </head>
-<body  class="bg-lightGray fg-white h-vh-100 m4-cloak">
+<body class="bg-lightGray fg-white h-vh-100 m4-cloak">
 <div class="head-bar pos-absolute bg-cobalt fg-white">
     <span class="app-title">NSC Builder 1.00 - File Info</span>
     <div style="margin-left:auto;margin-right:0;"><button class="expand-button light" id="collapse_toggle_2"><span></span></button></div>
@@ -311,8 +311,12 @@ document.getElementById("collapse_toggle_2").click();
 
 async function start(){
 	show_gameinfo()
-	//var fname=await eel.getfname()();
-	var fname="D:/NSCB_temp/calculate.xci"
+	var fname=await eel.getfname()()
+	if(!fname) {
+		// .dev
+		fname = "/usr/soft/NSCB_temp/Samurai Bringer 01007E30176E6000 v131072 (1G+1U).xci"
+		return
+	}
 	if (fname!=null && fname!=""){
 		<!-- console.log(fname); -->
 		resetInfo()
@@ -352,17 +356,31 @@ async function start_from_remote_library(data){
 }
 
 async function start2(fname){
+	var mask = document.getElementById("info-mask")
+	if(mask==null) {
+		mask = document.createElement('div')
+		mask.id='info-mask'
+		mask = document.body.appendChild(mask)
+		mask.style = 'position:fixed;top:0;width:100%;height:100%;z-index:1999;background:#eeeeee;opacity:0.8;'
+	}
 	try {
-	eel.call_showicon(fname)
-	eel.call_getinfo(fname)
-	eel.call_get_adv_filelist(fname)
-	eel.call_get_nacp_data(fname)
-	eel.call_get_npdm_data(fname)
-	eel.call_get_cnmt_data(fname)
-	eel.call_get_verification_data(fname)
+		mask.style.display=''
+		eel.call_showicon(fname)
+		eel.call_getinfo(fname)
+		eel.call_get_adv_filelist(fname)
+		eel.call_get_nacp_data(fname)
+		eel.call_get_npdm_data(fname)
+		eel.call_get_cnmt_data(fname)
+		eel.call_get_verification_data(fname)
 	}catch(e) {
+		mask.style.display='none'
 		console.error(e)
 	}
+}
+
+eel.expose(startLoad);
+function startLoad(fname) {
+	start2(fname)
 }
 
 function onStartedDownload(id) {
@@ -416,12 +434,6 @@ function downloadFile(blob)
     a.click();
     window.URL.revokeObjectURL(url);
 }
-
-
-
-
-
-
 
 async function start2_remote(fname){
 	console.log(fname)
@@ -555,6 +567,11 @@ function setInfo(data) {
 	eel.getcheats(data[2])(set_cheats)
 	if (data[40]!== "-"){
 		set_video(data[40])
+	}
+
+	var mask = document.getElementById("info-mask")
+	if(mask) {
+		mask.style.display='none'
 	}
 }
 

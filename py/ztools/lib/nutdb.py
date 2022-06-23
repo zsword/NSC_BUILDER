@@ -1,3 +1,4 @@
+import sys
 from ssl import SSLError
 from urllib.request import urlopen
 import requests
@@ -10,6 +11,7 @@ from binascii import hexlify as hx, unhexlify as uhx
 import pykakasi
 import os
 import Print
+import Utils
 from tqdm import tqdm
 import time
 import csv
@@ -28,7 +30,7 @@ NSCB_dir=os.path.abspath('../'+(os.curdir))
 
 if os.path.exists(os.path.join(squirrel_dir,'ztools')):
 	NSCB_dir=squirrel_dir
-	zconfig_dir=os.path.join(NSCB_dir, 'zconfig')	  
+	zconfig_dir=os.path.join(NSCB_dir, 'zconfig')
 	ztools_dir=os.path.join(NSCB_dir,'ztools')
 	squirrel_dir=ztools_dir
 elif os.path.exists(os.path.join(NSCB_dir,'ztools')):
@@ -56,8 +58,8 @@ def get_titlesurl(tfile):
 				
 def get_otherurl(tfile,dbname):
 	with open(tfile,'rt',encoding='utf8') as csvfile:
-		readCSV = csv.reader(csvfile, delimiter='|')	
-		i=0	
+		readCSV = csv.reader(csvfile, delimiter='|')
+		i=0
 		for row in readCSV:
 			if i==0:
 				csvheader=row
@@ -625,13 +627,17 @@ def consolidate_versiondb():
 				if i.endswith('800'):
 					try:
 						j=entry['version']
+						if j is None:
+						 	j=65536
 					except:
 						j=65536
 				else:
 					try:
 						j=entry['version']
+						if j is None:
+							j=0
 					except:
-						j=0	
+						j=0
 				try:
 					if not tid in ver_txt_dict:
 						ver_txt_dict[tid]=j
@@ -639,7 +645,7 @@ def consolidate_versiondb():
 						if int(j)>int(ver_txt_dict[tid]):
 							ver_txt_dict[tid]=j
 				except BaseException as e:
-					Print.error('Exception: ' + str(e))		
+					Utils.logError(e)
 	if os.path.exists(hcvfile):	
 		with open(hcvfile, 'r') as json_file:	
 			data3 = json.load(json_file)	
@@ -1488,7 +1494,7 @@ def get_content_data(titleid,trans=True):
 							if OnlinePlay=='None' or OnlinePlay=='':
 								OnlinePlay=False
 						else:
-							OnlinePlay=False							
+							OnlinePlay=False
 						if 'SaveDataCloud' in dict:
 							SaveDataCloud=str(dict['SaveDataCloud'])
 							if SaveDataCloud==True:
@@ -1498,7 +1504,7 @@ def get_content_data(titleid,trans=True):
 							if SaveDataCloud=='None' or SaveDataCloud=='':
 								SaveDataCloud=False
 						else:
-							SaveDataCloud=False								
+							SaveDataCloud=False
 						if 'category' in dict:
 							category=str(dict['category'])
 							try:	
@@ -1520,13 +1526,13 @@ def get_content_data(titleid,trans=True):
 							try:									
 								x = [x.strip() for x in eval(ratingContent)]							
 								ratingContent=x
-							except:pass	
+							except:pass
 							if ratingContent=='None' or str((', '.join(ratingContent)))=='':
-								ratingContent=False	
+								ratingContent=False
 							elif region=='Japan' or region=='Asia':
 								converter = kakashi_conv()
 								romalist=list()
-								for item in ratingContent:										
+								for item in ratingContent:
 									item=converter.do(item)	
 									item=item[0].upper()+item[1:]
 									romalist.append(item)
@@ -1555,8 +1561,8 @@ def get_content_data(titleid,trans=True):
 						if 'video' in dict:
 							video=str(dict['video'])	
 							if video=='None' or video=='':
-								video=False	
-						else:video=False		
+								video=False
+						else:video=False
 						if 'screenshots' in dict:
 							screenshots=str(dict['screenshots'])	
 							if screenshots=='None' or screenshots=='':
@@ -2191,4 +2197,4 @@ def check_files():
 	check_other_file(urlconfig,'versions')		
 	check_other_file(urlconfig,'HC_VLIST')	
 	check_other_file(urlconfig,'cheats')
-	consolidate_versiondb()	
+	consolidate_versiondb()

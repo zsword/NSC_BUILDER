@@ -11,7 +11,6 @@ eel = {
             let i = 'function '.length, j = name.indexOf('(');
             name = name.substring(i, j).trim();
         }
-
         eel._exposed_functions[name] = f;
     },
 
