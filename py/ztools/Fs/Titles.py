@@ -45,6 +45,9 @@ def items(region = None, language = None):
 	if region:
 		return regionTitles[region][language].items()
 
+	global titles
+	if titles is None:
+		titles = {}
 	return titles.items()
 
 def get(key, region = None, language = None):

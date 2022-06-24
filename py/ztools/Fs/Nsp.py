@@ -135,6 +135,8 @@ class Nsp(Pfs0):
 		return self.files.__iter__()
 
 	def title(self):
+		if self.titleId is None:
+			self.readTitle()
 		if self.titleId in Titles.keys():
 			return Titles.get(self.titleId)
 
@@ -193,6 +195,15 @@ class Nsp(Pfs0):
 			Print.info('readMeta filed ' + self.path + ", " + str(e))
 			raise
 		self.close()
+
+	def readTitle(self):
+		t = self.ticket()
+		rightsId = hx(t.getRightsId().to_bytes(0x10, byteorder='big')).decode('utf-8').upper()
+		self.titleId = rightsId[0:16]
+		self.title().setRightsId(rightsId)
+		Print.debug('rightsId = ' + rightsId)
+		Print.debug(self.titleId + ' key = ' +  str(t.getTitleKeyBlock()))
+		self.setHasValidTicket(t.getTitleKeyBlock() != 0)
 
 	def unpack(self, path):
 		os.makedirs(path, exist_ok=True)
