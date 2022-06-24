@@ -37,7 +37,7 @@ def data(region = None, language = None):
 
 		return regionTitles[region][language]
 
-	if titles == None:
+	if titles is None:
 		titles = {}
 	return titles
 
@@ -57,6 +57,9 @@ def get(key, region = None, language = None):
 	return data(region, language)[key]
 	
 def contains(key, region = None):
+	global titles
+	if titles is None:
+		titles = {}
 	return key in titles
 
 def erase(id):
@@ -71,7 +74,7 @@ def keys(region = None, language = None):
 	global titles
 	if region:
 		return regionTitles[region][language].keys()
-	if titles == None:
+	if titles is None:
 		titles = {}
 	return titles.keys()
 

@@ -8,7 +8,8 @@
             "name": "Python: lib nutdb",
             "type": "python",
             "request": "launch",
-            "program": "${file}",
+            "cwd": "${workspaceFolder}/py/ztools/",
+            "program": "squirrel.py",
             "args": ["-lib_call", "nutdb", "check_files"],
             "console": "integratedTerminal",
             "justMyCode": true

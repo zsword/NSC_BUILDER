@@ -27,6 +27,7 @@ from datetime import date
 # SET ENVIRONMENT
 squirrel_dir=os.path.abspath(os.curdir)
 NSCB_dir=os.path.abspath('../'+(os.curdir))
+BLOCK_SIZE=1024*100
 
 if os.path.exists(os.path.join(squirrel_dir,'ztools')):
 	NSCB_dir=squirrel_dir
@@ -162,7 +163,7 @@ def getnutdb():
 		try:
 			with open(tempfile,'wb') as nutfile:
 				print('Getting NUTDB json')
-				for data in response.iter_content(1024*100):
+				for data in response.iter_content(BLOCK_SIZE):
 					nutfile.write(data)
 					if not data:
 						break
@@ -184,7 +185,7 @@ def getnutdb():
 				try:
 					with open(tempfile,'wb') as nutfile:
 						print('Error in nutdb origin -> Getting NUTDB json using mirror')
-						for data in response.iter_content(65536):
+						for data in response.iter_content(BLOCK_SIZE):
 							nutfile.write(data)
 							if not data:
 								break
@@ -219,7 +220,7 @@ def getnutdb():
 			try:
 				with open(tempfile,'wb') as nutfile:
 					print('Error in nutdb origin -> Getting NUTDB json using mirror')
-					for data in response.iter_content(65536):
+					for data in response.iter_content(BLOCK_SIZE):
 						nutfile.write(data)
 						if not data:
 							break
@@ -481,7 +482,7 @@ def get_otherDB(dbfile,dbname,f,URL=None):
 		try:
 			with open(_dbfile_,'wb') as nutfile:
 				print('Getting NUTDB json "'+dbname+'"')
-				for data in response.iter_content(65536):
+				for data in response.iter_content(BLOCK_SIZE):
 					nutfile.write(data)
 					if not data:
 						break
@@ -510,7 +511,7 @@ def get_otherDB(dbfile,dbname,f,URL=None):
 			try:
 				with open(_dbfile_,'wb') as nutfile:
 					print('Getting NUTDB json "'+dbname+'"')
-					for data in response.iter_content(65536):
+					for data in response.iter_content(BLOCK_SIZE):
 						nutfile.write(data)
 						if not data:
 							break
@@ -846,7 +847,7 @@ def get_regionDB(region):
 		try:
 			with open(tempfile,'wb') as nutfile:
 				print('Getting NUTDB json "'+region+'"')
-				for data in response.iter_content(65536):
+				for data in response.iter_content(BLOCK_SIZE):
 					nutfile.write(data)
 					if not data:
 						break
@@ -868,7 +869,7 @@ def get_regionDB(region):
 				try:
 					with open(tempfile,'wb') as nutfile:
 						print('Getting NUTDB json "'+region+'"')
-						for data in response.iter_content(65536):
+						for data in response.iter_content(BLOCK_SIZE):
 							nutfile.write(data)
 							if not data:
 								break

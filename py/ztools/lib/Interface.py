@@ -77,7 +77,7 @@ else:
 	chromiumpath=os.path.join(chromiumdir, 'chrome')
 if not os.path.exists(chromiumpath):
 	if sys.platform in ['win32', 'win64']:
-		chromiumdir="D:/GreenSoftware/chromium"
+		chromiumdir="/GreenSoftware/chromium"
 		chromiumpath=os.path.join(chromiumdir, 'chrome.exe')
 		chromiumpath_alt=chromiumpath
 	else:
@@ -632,9 +632,11 @@ def showicon(filename):
 			return
 		a=f.icon_info(files_list)
 		f.flush()
-		f.close()	
-		encoded = b64encode(a).decode("ascii")
-		data= "data:image/png;base64, " + encoded	
+		f.close()
+		data="./img/gameplaceholder.gif"
+		if a is not None:
+			encoded = b64encode(a).decode("ascii")
+			data= "data:image/png;base64, " + encoded
 		eel.setImage(data)	
 		return
 	except BaseException as e:
