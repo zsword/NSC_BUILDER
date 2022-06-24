@@ -5843,8 +5843,9 @@ if __name__ == '__main__':
 		if args.patchversion:
 			for input in args.patchversion:
 				try:
-					number = int(input)
-					break
+					if input!="false":
+						number = int(input)
+						break
 				except BaseException as e:
 					Utils.logError(e)
 			else:

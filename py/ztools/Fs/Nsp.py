@@ -135,8 +135,6 @@ class Nsp(Pfs0):
 		return self.files.__iter__()
 
 	def title(self):
-
-
 		if self.titleId in Titles.keys():
 			return Titles.get(self.titleId)
 

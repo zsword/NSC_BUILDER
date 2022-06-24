@@ -141,6 +141,7 @@
 		<span></span>
 		<p class="mif-menu fg-light" height='100px'></p>
 		<div class="grid" style="margin-top:75px">
+			<p style="margin-bottom: 2px;margin-top: 2px;font-size:2vh;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;"><strong>FilePath: </strong><span id="filepath">-</span></p>
 			<div class="row" style="height: 80vh;margin-bottom: 1px;overflow:auto;" id="_viewspace_">
 				<div class="cell" style="font-size: 1.68vh;overflow-z:auto;" id="_GameInfo_"><div><div style="width: 55vw">
 					<p style="margin-bottom: 2px;margin-top: 2px;font-size: 2vh"><strong>Titleinfo: </strong></p>
@@ -356,6 +357,9 @@ async function start_from_remote_library(data){
 }
 
 async function start2(fname){
+	fpath=document.getElementById("filepath")
+	fpath.innerText = fpath.title = fname
+	if(!fname) return false
 	var mask = document.getElementById("info-mask")
 	if(mask==null) {
 		mask = document.createElement('div')
@@ -480,7 +484,15 @@ function set_ver_data(data) {
 	document.getElementById("_verificationdata_").innerHTML = data;
 }
 
-eel.expose(setInfo);
+eel.expose(loadDone);
+function loadDone() {
+	var mask = document.getElementById("info-mask")
+	if(mask) {
+		mask.style.display='none'
+	}
+}
+
+eel.expose(setInfo)
 function setInfo(data) {
 	document.getElementById("tname").innerHTML = data[0];
 	document.getElementById("editor").innerHTML = data[1];
@@ -567,11 +579,6 @@ function setInfo(data) {
 	eel.getcheats(data[2])(set_cheats)
 	if (data[40]!== "-"){
 		set_video(data[40])
-	}
-
-	var mask = document.getElementById("info-mask")
-	if(mask) {
-		mask.style.display='none'
 	}
 }
 

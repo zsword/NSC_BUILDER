@@ -23,6 +23,7 @@ import csv
 from listmanager import folder_to_list
 import html
 import Utils
+import Titles
 
 def About(noconsole=False):	
 	if noconsole==True:
@@ -47,10 +48,8 @@ def About(noconsole=False):
 	print('Cheats and Eshop information from nutdb and http://tinfoil.io                         ')
 	print('------------------------------------------------------------------------------------- ')
 eel.init('web')
-print("ss1")
 squirrel_dir=os.path.abspath(os.curdir)
 NSCB_dir=os.path.abspath('../'+(os.curdir))
-print("ss2")
 if os.path.exists(os.path.join(squirrel_dir,'ztools')):
 	NSCB_dir=squirrel_dir
 	zconfig_dir=os.path.join(NSCB_dir, 'zconfig')	  
@@ -63,7 +62,6 @@ elif os.path.exists(os.path.join(NSCB_dir,'ztools')):
 else:	
 	ztools_dir=os.path.join(NSCB_dir, 'ztools')
 	zconfig_dir=os.path.join(NSCB_dir, 'zconfig')
-print("ss3")
 tmpfolder =os.path.join(NSCB_dir,'tmp')
 chromiumpath=os.path.join(ztools_dir,'chromium')
 chromiumpath_alt=os.path.join(squirrel_dir,'chromium')
@@ -78,8 +76,13 @@ else:
 	chromiumdir=os.path.join(ztools_dir, 'chromium')
 	chromiumpath=os.path.join(chromiumdir, 'chrome')
 if not os.path.exists(chromiumpath):
-	chromiumdir='/usr/bin/'
-	chromiumpath=os.path.join(chromiumdir, 'chromium')
+	if sys.platform in ['win32', 'win64']:
+		chromiumdir="D:/GreenSoftware/chromium"
+		chromiumpath=os.path.join(chromiumdir, 'chrome.exe')
+		chromiumpath_alt=chromiumpath
+	else:
+		chromiumdir='/usr/bin/'
+		chromiumpath=os.path.join(chromiumdir, 'chromium')
 
 print("Chromium Path: "+chromiumpath)
 
@@ -613,7 +616,7 @@ def showicon(filename):
 	# print(filename)
 	try:
 		if filename.endswith('.nsp')or filename.endswith('.nsx') or filename.endswith('.nsz'):
-			files_list=sq_tools.ret_nsp_offsets(filename)	
+			files_list=sq_tools.ret_nsp_offsets(filename)
 			f = Fs.Nsp(filename, 'rb')
 		elif filename.endswith('.xci') or filename.endswith('.xcz'):	
 			files_list=sq_tools.ret_xci_offsets(filename)		
@@ -1011,8 +1014,9 @@ def getcheats(ID):
 	except:
 			feed=html_feed(feed,1,message=str('LIST OF CHEATS: '))		
 			feed=html_feed(feed,2,message=str('- Cheats not found'))			
-	print('  DONE')	
-	sys.stdout.flush()	
+	print('  DONE')
+	sys.stdout.flush()
+	eel.loadDone()
 	return feed
 
 def getfiledata(filename,remotelocation=False):

@@ -7,7 +7,6 @@ import json
 import operator
 import Print
 
-
 global titles
 titles = None
 
@@ -69,9 +68,11 @@ def set(key, value):
 	
 	
 def keys(region = None, language = None):
+	global titles
 	if region:
 		return regionTitles[region][language].keys()
-
+	if titles == None:
+		titles = {}
 	return titles.keys()
 
 

@@ -322,7 +322,9 @@ def _process_message(message, ws):
 			elif message['status'] == 'error' and error_callback is not None:
 				error_callback(message['error'], message['stack'])
 		else:
-			_call_return_values[call_id] = message['value']
+			try:
+				_call_return_values[call_id] = message['value']
+			except:pass
 	else:
 		print('Invalid message received: ', message)
 
