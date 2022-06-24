@@ -87,3 +87,4 @@ py/ztools/lib/plaintext.py
 /.idea/
 /py/ztools/build/squirrel/
 /py/ztools/dist/
+/py/ztools/squirrel.spec

@@ -128,7 +128,7 @@ def get_apivjson():
 	try:
 		response = requests.get('http://tinfoil.io/Api/patches/get', stream=True, verify=False)
 	except BaseException as e:
-		Print.error('Exception: ' + str(e))		
+		Utils.logError(e)		
 	if '<Response [404]>'!=str(response):
 		tempfile=apivjson[:-4]+'2.json'		
 		try:
@@ -146,7 +146,7 @@ def get_apivjson():
 			try:os.remove(tempfile)
 			except:pass	
 		except BaseException as e:
-			Print.error('Exception: ' + str(e))	
+			Utils.logError(e)	
 			pass			
 
 def get_DBfolder():
@@ -156,7 +156,7 @@ def getnutdb():
 	try:
 		response = requests.get(json_url, stream=True, verify=False)
 	except BaseException as e:
-		Print.error('Exception: ' + str(e))	
+		Utils.logError(e)	
 	if '<Response [404]>'!=str(response):
 		tempfile=nutdbfile[:-4]+'2.json'		
 		try:
@@ -164,7 +164,6 @@ def getnutdb():
 				print('Getting NUTDB json')
 				for data in response.iter_content(1024*100):
 					nutfile.write(data)
-					Print.info(str(data))
 					if not data:
 						break
 			with open(tempfile) as json_file:					
@@ -179,7 +178,7 @@ def getnutdb():
 			try:
 				response = requests.get(json_url_mirror, stream=True, verify=False)
 			except BaseException as e:
-				Print.error('Exception: ' + str(e))					
+				Utils.logError(e)					
 			if '<Response [404]>'!=str(response):
 				tempfile=nutdbfile[:-4]+'2.json'
 				try:
@@ -198,7 +197,7 @@ def getnutdb():
 					except:pass
 					return True	
 				except BaseException as e:
-					Print.error('Exception: ' + str(e))		
+					Utils.logError(e)		
 					try:os.remove(tempfile)
 					except:pass	
 					os.utime(nutdbfile,(time.time(),time.time()))	
@@ -214,7 +213,7 @@ def getnutdb():
 		try:
 			response = requests.get(json_url_mirror, stream=True, verify=False)
 		except BaseException as e:
-			Print.error('Exception: ' + str(e))	
+			Utils.logError(e)	
 		if '<Response [404]>'!=str(response):
 			tempfile=nutdbfile[:-4]+'2.json'			
 			try:
@@ -233,7 +232,7 @@ def getnutdb():
 				except:pass
 				return False
 			except BaseException as e:
-				Print.error('Exception: ' + str(e))		
+				Utils.logError(e)		
 				try:os.remove(tempfile)
 				except:pass	
 				os.utime(nutdbfile,(time.time(),time.time()))	
@@ -265,7 +264,7 @@ def regionurl(region):
 	try:
 		response = requests.get(url, stream=True, verify=False)
 	except BaseException as e:
-		Print.error('Exception: ' + str(e))
+		Utils.logError(e)
 	if '<Response [404]>'!=str(response):
 		return url
 	else:
@@ -474,7 +473,7 @@ def get_otherDB(dbfile,dbname,f,URL=None):
 	try:
 		response = requests.get(url, stream=True, verify=False)
 	except BaseException as e:
-		Print.error('Exception: ' + str(e))
+		Utils.logError(e)
 	if '<Response [404]>'!=str(response):	
 		if os.path.exists(_dbfile_):
 			try:os.remove(_dbfile_)
@@ -487,7 +486,7 @@ def get_otherDB(dbfile,dbname,f,URL=None):
 					if not data:
 						break
 		except BaseException as e:
-			Print.error('Exception: ' + str(e))		
+			Utils.logError(e)		
 			try:os.remove(_dbfile_)
 			except:pass	
 		if 	dbname=='versions_txt' and URL==None:	
@@ -503,7 +502,7 @@ def get_otherDB(dbfile,dbname,f,URL=None):
 		try:
 			response = requests.get(url, stream=True, verify=False)
 		except BaseException as e:
-			Print.error('Exception: ' + str(e))
+			Utils.logError(e)
 		if '<Response [404]>'!=str(response):	
 			if os.path.exists(_dbfile_):
 				try:os.remove(_dbfile_)
@@ -516,7 +515,7 @@ def get_otherDB(dbfile,dbname,f,URL=None):
 						if not data:
 							break
 			except BaseException as e:
-				Print.error('Exception: ' + str(e))		
+				Utils.logError(e)		
 				try:os.remove(_dbfile_)
 				except:pass	
 			if 	dbname=='versions_txt' and URL==None:	
@@ -615,7 +614,7 @@ def consolidate_versiondb():
 							if int(j)>int(ver_txt_dict[tid]):
 								ver_txt_dict[tid]=j
 					except BaseException as e:
-						Print.error('Exception: ' + str(e))
+						Utils.logError(e)
 	if os.path.exists(titles_JSON):	
 		with open(titles_JSON, 'r') as json_file:	
 			data2 = json.load(json_file)	
@@ -671,7 +670,7 @@ def consolidate_versiondb():
 						if int(j)>int(ver_txt_dict[tid]):
 							ver_txt_dict[tid]=j
 				except BaseException as e:
-					Print.error('Exception: ' + str(e))	
+					Utils.logError(e)	
 	from copy import deepcopy
 	newdict= deepcopy(ver_txt_dict)				
 	for i in ver_txt_dict:
@@ -772,7 +771,7 @@ def get_libs_remote_source(lib):
 						update=False
 					libraries[library]=[route,TD,update]
 				except BaseException as e:
-					Print.error('Exception: ' + str(e))			
+					Utils.logError(e)			
 					pass
 		if not libraries:
 			return False
@@ -841,7 +840,7 @@ def get_regionDB(region):
 	try:
 		response = requests.get(url, stream=True, verify=False)
 	except BaseException as e:
-		Print.error('Exception: ' + str(e))			
+		Utils.logError(e)			
 	if '<Response [404]>'!=str(response):	
 		tempfile=regionfile[:-4]+'2.json'			
 		try:
@@ -863,7 +862,7 @@ def get_regionDB(region):
 			try:
 				response = requests.get(url, stream=True, verify=False)
 			except BaseException as e:
-				Print.error('Exception: ' + str(e))	
+				Utils.logError(e)	
 			if '<Response [404]>'!=str(response):	
 				tempfile=regionfile[:-4]+'2.json'			
 				try:
@@ -881,7 +880,7 @@ def get_regionDB(region):
 					try:os.remove(tempfile)
 					except:pass							
 				except BaseException as e:
-					Print.error('Exception: ' + str(e))		
+					Utils.logError(e)		
 					try:os.remove(tempfile)
 					except:pass	
 					os.utime(regionfile,(time.time(),time.time()))
@@ -930,7 +929,7 @@ def force_refresh():
 		consolidate_versiondb()
 		return True
 	except BaseException as e:
-		Print.error('Exception: ' + str(e))		
+		Utils.logError(e)		
 		return False
 					
 def check_current():	
@@ -1273,7 +1272,7 @@ def get_content_langue(titleid):
 			try:
 				langue=convertlangue(langue,region)
 			except BaseException as e:
-				Print.error('Exception: ' + str(e))	
+				Utils.logError(e)	
 				pass	
 			break
 	return langue
@@ -1418,7 +1417,7 @@ def get_list_match(token,roma=True,show=False,Print=False):
 				for entry in printlist:	
 					tfile.write(entry+'\n')	
 		except BaseException as e:
-			Print.error('Exception: ' + str(e))	
+			Utils.logError(e)	
 			pass				
 	return 	matchdict
 	
@@ -1806,7 +1805,7 @@ def checkfolder(ofolder,roman=True,printinfo=True):
 				try:
 					Datashelve[str(fileid)]=[filepath,fileid,fileversion,cctag,nG,nU,nD,baseid]				
 				except BaseException as e:
-					Print.error('Exception: ' + str(e))							
+					Utils.logError(e)							
 			else:
 				try:
 					if str(fileid) in Datashelve:
@@ -1824,7 +1823,7 @@ def checkfolder(ofolder,roman=True,printinfo=True):
 					else:
 						Datashelve[str(fileid)]=[filepath,fileid,fileversion,cctag,nG,nU,nD,baseid]						
 				except BaseException as e:
-					Print.error('Exception: ' + str(e))		
+					Utils.logError(e)		
 		except:pass			
 	del filelist	
 
@@ -1926,7 +1925,7 @@ def checkfolder_updates(ofolder,roman=True,printinfo=True):
 				try:
 					Datashelve[str(fileid)]=[filepath,fileid,fileversion,cctag,nG,nU,nD,baseid]				
 				except BaseException as e:
-					Print.error('Exception: ' + str(e))							
+					Utils.logError(e)							
 			else:
 				try:
 					if str(fileid) in Datashelve:
@@ -1944,7 +1943,7 @@ def checkfolder_updates(ofolder,roman=True,printinfo=True):
 					else:
 						Datashelve[str(fileid)]=[filepath,fileid,fileversion,cctag,nG,nU,nD,baseid]						
 				except BaseException as e:
-					Print.error('Exception: ' + str(e))		
+					Utils.logError(e)		
 		except:pass			
 	del filelist	
 

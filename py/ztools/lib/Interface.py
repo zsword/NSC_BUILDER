@@ -22,6 +22,7 @@ import File_chunk2 as file_chunk
 import csv
 from listmanager import folder_to_list
 import html
+import Utils
 
 def About(noconsole=False):	
 	if noconsole==True:
@@ -46,10 +47,10 @@ def About(noconsole=False):
 	print('Cheats and Eshop information from nutdb and http://tinfoil.io                         ')
 	print('------------------------------------------------------------------------------------- ')
 eel.init('web')
-
+print("ss1")
 squirrel_dir=os.path.abspath(os.curdir)
 NSCB_dir=os.path.abspath('../'+(os.curdir))
-
+print("ss2")
 if os.path.exists(os.path.join(squirrel_dir,'ztools')):
 	NSCB_dir=squirrel_dir
 	zconfig_dir=os.path.join(NSCB_dir, 'zconfig')	  
@@ -62,7 +63,7 @@ elif os.path.exists(os.path.join(NSCB_dir,'ztools')):
 else:	
 	ztools_dir=os.path.join(NSCB_dir, 'ztools')
 	zconfig_dir=os.path.join(NSCB_dir, 'zconfig')
-	
+print("ss3")
 tmpfolder =os.path.join(NSCB_dir,'tmp')
 chromiumpath=os.path.join(ztools_dir,'chromium')
 chromiumpath_alt=os.path.join(squirrel_dir,'chromium')
@@ -79,6 +80,8 @@ else:
 if not os.path.exists(chromiumpath):
 	chromiumdir='/usr/bin/'
 	chromiumpath=os.path.join(chromiumdir, 'chromium')
+
+print("Chromium Path: "+chromiumpath)
 
 local_lib_file = os.path.join(zconfig_dir, 'local_libraries.txt')
 remote_lib_file = os.path.join(zconfig_dir, 'remote_libraries.txt')
@@ -127,7 +130,7 @@ def libraries(tfile):
 		# print(db)			
 		return db
 	except BaseException as e:
-		Print.error('Exception: ' + str(e))
+		Utils.logWarn(e)
 		return False
 
 def get_library_from_path(tfile,filename):
@@ -353,7 +356,7 @@ def search_local_lib(value,library):
 		eel.load_local_results(html)	
 		return
 	except BaseException as e:
-		Print.error('Exception: ' + str(e))
+		Utils.logError(e)
 		sys.stdout.flush()	
 		
 @eel.expose
@@ -374,7 +377,7 @@ def get_libraries():
 		htmlcode+='</select>'		
 		return htmlcode
 	except BaseException as e:
-		Print.error('Exception: ' + str(e))	
+		Utils.logError(e)	
 		sys.stdout.flush()		
 		
 @eel.expose
@@ -394,7 +397,7 @@ def get_drive_libraries():
 		htmlcode+='</select>'		
 		return htmlcode
 	except BaseException as e:
-		Print.error('Exception: ' + str(e))		
+		Utils.logError(e)		
 		sys.stdout.flush()		
 		
 def search_remote_lib(value,library): 
@@ -467,7 +470,7 @@ def search_remote_lib(value,library):
 		eel.load_remote_results(html)
 		return	
 	except BaseException as e:
-		Print.error('Exception: ' + str(e))		
+		Utils.logError(e)		
 		sys.stdout.flush()		
 def sortbyname(files):
 	results={};
@@ -485,7 +488,7 @@ def getfname():
 			t.kill()
 		treads=[]	
 	except BaseException as e:
-		# Print.error('Exception: ' + str(e))
+		# Utils.logError(e)
 		pass		
 	root = tk.Tk()
 	root.withdraw()
@@ -632,7 +635,7 @@ def showicon(filename):
 		eel.setImage(data)	
 		return
 	except BaseException as e:
-		Print.error('Exception: ' + str(e))
+		Utils.logError(e)
 		sys.stdout.flush()		
 		iconurl=retrieve_icon_from_server(filename)
 		if iconurl!=False:
@@ -1245,7 +1248,8 @@ def server(port=8000,host='localhost',videoplayback=True,ssl=False,noconsole=Fal
 def start(browserpath='auto',videoplayback=True,height=800,width=740,port=8000,host='localhost',noconsole=False):
 	if not (sys.platform in ['win32', 'win64']) and browserpath=='auto':
 		browserpath='default'
-	flag_file=os.path.join(debug_folder,'flag')	
+	flag_file=os.path.join(debug_folder,'flag')
+	print(flag_file)
 	with open(flag_file,'wt') as tfile:
 		if noconsole==True:	
 			tfile.write('True')
@@ -1371,7 +1375,7 @@ def start(browserpath='auto',videoplayback=True,height=800,width=740,port=8000,h
 					t.kill()
 				treads=[]	
 			except BaseException as e:
-				# Print.error('Exception: ' + str(e))
+				# Utils.logError(e)
 				pass
 			print("User closed the program")
 			sys.stdout.flush()			

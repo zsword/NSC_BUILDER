@@ -148,3 +148,11 @@ def logError(e):
 		traceback.print_exc()
 	else:
 		Print.error('Exception: ' + str(e))
+
+def logWarn(e):
+	if LOG_LEVEL>0:
+		s = sys.exc_info()
+		Print.info(s[0]+', '+s[1]+', '+s[2].tb_lineno)
+		traceback.print_exc()
+	else:
+		Print.error('Exception: ' + str(e))
