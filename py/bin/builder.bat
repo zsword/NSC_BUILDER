@@ -1,7 +1,8 @@
 @ECHO OFF
+cd ..\ztools\dist\
 :TOP_INIT
-set "prog_dir=%~dp0"
-set "bat_name=%~n0"
+set "prog_dir=%CD%"
+set "bat_name=NSCB"
 set "ofile_name=%bat_name%_options.cmd"
 set "opt_interface=Interface_options.cmd"
 set "opt_server=Server_options.cmd"
@@ -10,9 +11,9 @@ set "list_folder=%prog_dir%lists"
 ::-----------------------------------------------------
 ::EDIT THIS VARIABLE TO LINK OTHER OPTION FILE
 ::-----------------------------------------------------
-set "op_file=%~dp0zconfig\%ofile_name%"
-set "opt_interface=%~dp0zconfig\%opt_interface%"
-set "opt_server=%~dp0zconfig\%opt_server%"
+set "op_file=%prog_dir%\zconfig\%ofile_name%"
+set "opt_interface=%prog_dir%\zconfig\%opt_interface%"
+set "opt_server=%prog_dir%\zconfig\%opt_server%"
 ::-----------------------------------------------------
 ::COPY OPTIONS FROM OPTION FILE
 ::-----------------------------------------------------
@@ -52,7 +53,6 @@ set "MTP_ptch_inst_spec=%MTP_ptch_inst_spec%"
 
 REM Copy function
 set "pycommand=%pycommand%"
-set "pycommand=python"
 set "buffer=%buffer%"
 set "nf_cleaner=%nf_cleaner%"
 set "patchRSV=%patchRSV%"
@@ -77,33 +77,33 @@ REM FILES
 set "uinput=%uinput%"
 set "dec_keys=%dec_keys%"
 REM FOLDERS
-set "w_folder=%~dp0%w_folder%"
+set "w_folder=%prog_dir%\%w_folder%"
 set "fold_output=%fold_output%"
-set "zip_fold=%~dp0%zip_fold%"
+set "zip_fold=%prog_dir%\%zip_fold%"
 )
 ::-----------------------------------------------------
 ::SET ABSOLUTE ROUTES
 ::-----------------------------------------------------
 ::Program full route
-if exist "%~dp0%squirrel%" set "squirrel=%~dp0%squirrel%"
-if exist "%~dp0%squirrel_lb%" set "squirrel_lb=%~dp0%squirrel_lb%"
-if exist "%~dp0%xci_lib%"  set "xci_lib=%~dp0%xci_lib%"
-if exist "%~dp0%nsp_lib%"  set "nsp_lib=%~dp0%nsp_lib%"
-if exist "%~dp0%zip%"  set "zip=%~dp0%zip%"
+if exist "%prog_dir%\%squirrel%" set "squirrel=%prog_dir%\%squirrel%"
+if exist "%prog_dir%\%squirrel_lb%" set "squirrel_lb=%prog_dir%\%squirrel_lb%"
+if exist "%prog_dir%\%xci_lib%"  set "xci_lib=%prog_dir%\%xci_lib%"
+if exist "%prog_dir%\%nsp_lib%"  set "nsp_lib=%prog_dir%\%nsp_lib%"
+if exist "%prog_dir%\%zip%"  set "zip=%prog_dir%\%zip%"
 
-if exist "%~dp0%hacbuild%"  set "hacbuild=%~dp0%hacbuild%"
-if exist "%~dp0%listmanager%"  set "listmanager=%~dp0%listmanager%"
-if exist "%~dp0%batconfig%"  set "batconfig=%~dp0%batconfig%"
-if exist "%~dp0%batdepend%"  set "batdepend=%~dp0%batdepend%"
-if exist "%~dp0%infobat%"  set "infobat=%~dp0%infobat%"
+if exist "%prog_dir%\%hacbuild%"  set "hacbuild=%prog_dir%\%hacbuild%"
+if exist "%prog_dir%\%listmanager%"  set "listmanager=%prog_dir%\%listmanager%"
+if exist "%prog_dir%\%batconfig%"  set "batconfig=%prog_dir%\%batconfig%"
+if exist "%prog_dir%\%batdepend%"  set "batdepend=%prog_dir%\%batdepend%"
+if exist "%prog_dir%\%infobat%"  set "infobat=%prog_dir%\%infobat%"
 ::Important files full route
-if exist "%~dp0%uinput%"  set "uinput=%~dp0%uinput%"
-if exist "%~dp0%dec_keys%"  set "dec_keys=%~dp0%dec_keys%"
+if exist "%prog_dir%\%uinput%"  set "uinput=%prog_dir%\%uinput%"
+if exist "%prog_dir%\%dec_keys%"  set "dec_keys=%prog_dir%\%dec_keys%"
 ::Folder output
-CD /d "%~dp0"
+CD /d "%prog_dir%\"
 if not exist "%fold_output%" MD "%fold_output%"
-if not exist "%fold_output%" MD "%~dp0%fold_output%"
-if exist "%~dp0%fold_output%"  set "fold_output=%~dp0%fold_output%"
+if not exist "%fold_output%" MD "%prog_dir%\%fold_output%"
+if exist "%prog_dir%\%fold_output%"  set "fold_output=%prog_dir%\%fold_output%"
 ::-----------------------------------------------------
 ::A LOT OF CHECKS
 ::-----------------------------------------------------
@@ -2287,21 +2287,21 @@ if exist "%bs%" ( goto multi_checklogo )
 goto multi_set_clogo
 
 :multi_checklogo
-if exist "%~dp0logo.txt" del "%~dp0logo.txt" >NUL 2>&1
-echo %bs%>"%~dp0hlogo.txt"
-FINDSTR /L ".nsp" "%~dp0hlogo.txt" >"%~dp0logo.txt"
-FINDSTR /L ".nca" "%~dp0hlogo.txt" >>"%~dp0logo.txt"
-set /p custlogo=<"%~dp0logo.txt"
-del "%~dp0hlogo.txt"
+if exist "%prog_dir%\logo.txt" del "%prog_dir%\logo.txt" >NUL 2>&1
+echo %bs%>"%prog_dir%\hlogo.txt"
+FINDSTR /L ".nsp" "%prog_dir%\hlogo.txt" >"%prog_dir%\logo.txt"
+FINDSTR /L ".nca" "%prog_dir%\hlogo.txt" >>"%prog_dir%\logo.txt"
+set /p custlogo=<"%prog_dir%\logo.txt"
+del "%prog_dir%\hlogo.txt"
 ::echo %custlogo%
-for /f "usebackq tokens=*" %%f in ( "%~dp0logo.txt" ) do (
+for /f "usebackq tokens=*" %%f in ( "%prog_dir%\logo.txt" ) do (
 set "logoname=%%~nxf"
 if "%%~nxf"=="%%~nf.nsp" goto ext_log
 if "%%~nxf"=="%%~nf.nca" goto check_log
 )
 
 :ext_log
-del "%~dp0logo.txt"
+del "%prog_dir%\logo.txt"
 if not exist "%w_folder%" MD "%w_folder%" >NUL 2>&1
 if exist "%w_folder%\normal" RD /S /Q "%w_folder%\normal" >NUL 2>&1
 
@@ -2321,7 +2321,7 @@ echo.
 goto multi_checkagain
 
 :check_log
-del "%~dp0logo.txt"
+del "%prog_dir%\logo.txt"
 if not exist "%w_folder%" MD "%w_folder%" >NUL 2>&1
 if exist "%w_folder%\normal" RD /S /Q "%w_folder%\normal" >NUL 2>&1
 %pycommand% "%squirrel%" --ncatype "%custlogo%">"%w_folder%\ncatype.txt"
