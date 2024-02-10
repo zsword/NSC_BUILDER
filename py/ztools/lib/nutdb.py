@@ -470,6 +470,9 @@ def get_otherDB(dbfile,dbname,f,URL=None):
 		URL=url
 	else:
 		url=URL
+	if url==None:
+		print('[ERROR] DB URL not found:', dbfile, dbname)
+		return False
 	_dbfile_=os.path.join(DATABASE_folder,f)
 	try:
 		response = requests.get(url, stream=True, verify=False)
