@@ -88,3 +88,4 @@ py/ztools/lib/plaintext.py
 /py/ztools/build/
 /py/ztools/dist/
 /py/ztools/squirrel.spec
+.DS_Store
