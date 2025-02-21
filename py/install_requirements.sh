@@ -17,11 +17,13 @@ echo "--------------------------------------------------------------------------
 exit 0
 }
 
-#!/bin/bash
-
-pycommand="python3"
+alias pycommand=python3
+if command -v python >/dev/null 2>&1; then
+  alias pycommand=python
+fi
 op_file="$(dirname "$0")/zconfig/NSCB_options.sh"
 
+echo "pycommand"
 
 if [ -f "$op_file" ]; then
     source "$op_file"
@@ -30,10 +32,11 @@ fi
 echo
 echo "Installing dependencies"
 echo
-$pycommand -m pip install --upgrade pip
-$pycommand -m pip install wheel
-$pycommand -m pip install urllib3 unidecode tqdm bs4 requests pillow pywin32 pycryptodome pykakasi googletrans==4.0.0-rc1 chardet eel bottle zstandard colorama google-auth-httplib2 google-auth-oauthlib windows-curses oauth2client comtypes
-$pycommand -m pip install --upgrade google-api-python-client
+pip install --upgrade pip
+pip install wheel
+pip install urllib3 unidecode tqdm bs4 requests pillow pycryptodome pykakasi googletrans==4.0.0-rc1 chardet eel bottle zstandard colorama google-auth-httplib2 google-auth-oauthlib oauth2client comtypes
+pip install pywin32 windows-curses
+pip install --upgrade google-api-python-client
 echo
 echo "**********************************************************************************"
 echo "---IMPORTANT: Check if dependencies were installed correctly before continuing---"

@@ -267,13 +267,13 @@ class Nsp(Pfs0):
 		self.path = path
 		self.version = '0'
 
-		z = re.match('.*\[([a-zA-Z0-9]{16})\].*', path, re.I)
+		z = re.match(r'.*\[([a-zA-Z0-9]{16})\].*', path, re.I)
 		if z:
 			self.titleId = z.groups()[0].upper()
 		else:
 			self.titleId = None
 
-		z = re.match('.*\[v([0-9]+)\].*', path, re.I)
+		z = re.match(r'.*\[v([0-9]+)\].*', path, re.I)
 		if z:
 			self.version = z.groups()[0]
 
@@ -323,7 +323,7 @@ class Nsp(Pfs0):
 
 	def cleanFilename(self, s):
 		#s = re.sub('\s+\Demo\s*', ' ', s, re.I)
-		s = re.sub('\s*\[DLC\]\s*', '', s, re.I)
+		s = re.sub(r'\s*\[DLC\]\s*', '', s, re.I)
 		s = re.sub(r'[\/\\\:\*\?\"\<\>\|\.\s™©®()\~]+', ' ', s)
 		return s.strip()
 
@@ -2480,7 +2480,7 @@ class Nsp(Pfs0):
 							message='Table offset = '+ str(hx((offset+0x20).to_bytes(2, byteorder='big')));print(message);feed+=message+'\n'
 							message='Number of content = '+ str(content_entries);print(message);feed+=message+'\n'
 							message='Number of meta entries = '+ str(meta_entries);print(message);feed+=message+'\n'
-							message='Application id\Patch id = ' + (str(hx(original_ID.to_bytes(8, byteorder='big')))[2:-1]).upper();print(message);feed+=message+'\n'
+							message=r'Application id\Patch id = ' + (str(hx(original_ID.to_bytes(8, byteorder='big')))[2:-1]).upper();print(message);feed+=message+'\n'
 							content_name=str(cnmt._path)
 							content_name=content_name[:-22]
 							if content_name == 'AddOnContent':

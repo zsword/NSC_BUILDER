@@ -838,7 +838,7 @@ class Nca(File):
 		message='Table offset = '+ str(hx((offset+0x20).to_bytes(2, byteorder='big')));print(message);feed+=message+'\n'
 		message='Number of content = '+ str(content_entries);print(message);feed+=message+'\n'
 		message='Number of meta entries = '+ str(meta_entries);print(message);feed+=message+'\n'
-		message='Application id\Patch id = ' + (str(hx(original_ID.to_bytes(8, byteorder='big')))[2:-1]).upper();print(message);feed+=message+'\n'
+		message=r'Application id\Patch id = ' + (str(hx(original_ID.to_bytes(8, byteorder='big')))[2:-1]).upper();print(message);feed+=message+'\n'
 		message='RequiredVersion = ' + str(min_sversion);print(message);feed+=message+'\n'
 		message='Length of exmeta = ' + str(length_of_emeta);print(message);feed+=message+'\n'
 		self.seek(cmt_offset+offset+0x20)

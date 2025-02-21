@@ -71,7 +71,7 @@ class kakasi:
         return self._kakasi.convert(text)
 
     # v1 API implementations
-    @deprecated(version=2.1, reason="Old API will be removed in v3.0.")
+    #@deprecated(version=2.1, reason="Old API will be removed in v3.0.")
     def setMode(self, fr: str, to: Optional[Union[bool, str]]) -> None:
         if fr in self._keys:
             if to is None:
@@ -100,7 +100,7 @@ class kakasi:
         else:
             raise UnknownOptionsException("Unhandled options")  # pragma: no cover
 
-    @deprecated(version=2.1, reason="Old API will be removed in v3.0.")
+    #@deprecated(version=2.1, reason="Old API will be removed in v3.0.")
     def getConverter(self):
         self._conv["J"] = J2(self._mode["J"], method=self._option["r"])
         self._conv["H"] = H2(self._mode["H"], method=self._option["r"])
@@ -109,7 +109,7 @@ class kakasi:
         self._conv["a"] = A2(self._mode["a"])
         return self
 
-    @deprecated(version=2.1, reason="Old API will be removed in v3.0.")
+    #@deprecated(version=2.1, reason="Old API will be removed in v3.0.")
     def do(self, text: str) -> str:
         _MAXLEN = 32
         otext = ""
@@ -220,7 +220,7 @@ class kakasi:
         return otext
 
 
-@deprecated(version=2.1, reason="Old API will be removed in v3.0.")
+#@deprecated(version=2.1, reason="Old API will be removed in v3.0.")
 class wakati(kakasi):
     def __init__(self):
         super(wakati, self).__init__()

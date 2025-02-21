@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 # cython:language_level=3
 
-'''
+r'''
    _____			 _				__
   / ___/____ ___  __(_)____________  / /
   \__ \/ __ `/ / / / / ___/ ___/ _ \/ /
@@ -2814,6 +2814,8 @@ if __name__ == '__main__':
 					except BaseException as e:
 						Utils.logError(e)	
 			else:
+				if type(args.decompress)==str:
+					args.decompress=[args.decompress]
 				for filepath in args.decompress:
 					dir=os.path.dirname(os.path.abspath(filepath))
 					ofolder =os.path.join(dir, 'output')

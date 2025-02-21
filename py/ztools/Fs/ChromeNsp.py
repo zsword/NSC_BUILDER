@@ -269,13 +269,13 @@ class ChromeNsp(Pfs0):
 		self.path = path
 		self.version = '0'
 
-		z = re.match('.*\[([a-zA-Z0-9]{16})\].*', path, re.I)
+		z = re.match(r'.*\[([a-zA-Z0-9]{16})\].*', path, re.I)
 		if z:
 			self.titleId = z.groups()[0].upper()
 		else:
 			self.titleId = None
 
-		z = re.match('.*\[v([0-9]+)\].*', path, re.I)
+		z = re.match(r'.*\[v([0-9]+)\].*', path, re.I)
 		if z:
 			self.version = z.groups()[0]
 
@@ -325,7 +325,7 @@ class ChromeNsp(Pfs0):
 
 	def cleanFilename(self, s):
 		#s = re.sub('\s+\Demo\s*', ' ', s, re.I)
-		s = re.sub('\s*\[DLC\]\s*', '', s, re.I)
+		s = re.sub(r'\s*\[DLC\]\s*', '', s, re.I)
 		s = re.sub(r'[\/\\\:\*\?\"\<\>\|\.\s™©®()\~]+', ' ', s)
 		return s.strip()
 
@@ -2435,7 +2435,7 @@ class ChromeNsp(Pfs0):
 							message=["Table offset:",(str(hx((offset+0x20).to_bytes(2, byteorder='big'))))];feed=self.html_feed(feed,3,message)
 							message=["Number of content:",(str(content_entries))];feed=self.html_feed(feed,3,message)
 							message=["Number of meta entries:",(str(meta_entries))];feed=self.html_feed(feed,3,message)
-							message=["Application id\Patch id:",((str(hx(original_ID.to_bytes(8, byteorder='big')))[2:-1]).upper())];feed=self.html_feed(feed,3,message)
+							message=[r"Application id\Patch id:",((str(hx(original_ID.to_bytes(8, byteorder='big')))[2:-1]).upper())];feed=self.html_feed(feed,3,message)
 
 							content_name=str(cnmt._path)
 							content_name=content_name[:-22]
