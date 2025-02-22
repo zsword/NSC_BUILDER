@@ -42,6 +42,7 @@ import zstandard
 from Crypto.Cipher import AES
 from Crypto.Util import Counter
 import time
+import ioutil
 
 
 #from Cryptodome.Signature import pss
@@ -9670,7 +9671,7 @@ class Nsp(Pfs0):
 	def get_data_from_cnmt(self,cnmtname):
 		for nca in self:
 			if type(nca) == Nca:
-				if 	str(nca.header.contentType) == 'Content.META':
+				if 	nca.header.contentType==Type.Content.META or str(nca.header.contentType) == 'Content.META':
 					if str(nca._path)==cnmtname:
 						crypto1=nca.header.getCryptoType()
 						crypto2=nca.header.getCryptoType2()
@@ -10043,6 +10044,7 @@ class Nsp(Pfs0):
 			totsize+=s
 		t = tqdm(total=totsize, unit='B', unit_scale=True, leave=False)
 		# Hex.dump(nspheader)
+		ioutil.mkdirs(output)
 		with open(output, 'wb') as o:
 			o.write(nspheader)
 			t.update(len(nspheader))
