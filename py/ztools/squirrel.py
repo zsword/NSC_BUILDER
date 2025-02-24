@@ -311,8 +311,11 @@ if __name__ == '__main__':
 		import math
 		import pykakasi
 		from Fs.pyNCA3 import NCA3
-		from shutil import disk_usage				
-			
+		from shutil import disk_usage
+		
+		from cmd.Api import CmdApi
+		cmdApi = CmdApi(args)
+
 		if args.library_call:
 			if (args.library_call[0]).startswith('Drive.'):
 				sys.path.insert(0, 'Drive')
@@ -810,65 +813,7 @@ if __name__ == '__main__':
 		# Copy all FILES from NSP\XCI file
 		# ...................................................
 		if args.extract:
-			if args.buffer:
-				for var in args.buffer:
-					try:
-						buffer = var
-					except BaseException as e:
-						Utils.logError(e)
-			else:
-				buffer = 65536
-			ofolder=False
-			if args.ofolder:
-				for input in args.ofolder:
-					try:
-						ofolder = input
-					except BaseException as e:
-						Utils.logError(e)
-			if not os.path.exists(ofolder):
-				os.makedirs(ofolder)
-			if args.text_file:
-				tfile=args.text_file
-				with open(tfile,"r+", encoding='utf8') as filelist:
-					filename = filelist.readline()
-					filename=os.path.abspath(filename.rstrip('\n'))
-					if ofolder != False:
-						dir=ofolder
-					else:
-						dir=os.path.dirname(os.path.abspath(filename))
-					basename=str(os.path.basename(os.path.abspath(filename)))
-					basename=basename[:-4]
-					ofolder =os.path.join(dir, basename)
-			else:
-				for filename in args.extract:
-					if ofolder != False:
-						dir=ofolder
-					else:
-						dir=os.path.dirname(os.path.abspath(filename))
-					basename=str(os.path.basename(os.path.abspath(filename)))
-					basename=basename[:-4]
-					ofolder =os.path.join(dir, basename)
-			if not os.path.exists(ofolder):
-				os.makedirs(ofolder)
-			test=filename.lower()
-			if test.endswith('.nsp') or test.endswith('.nsx') or test.endswith('.nsz'):
-				try:
-					f = Fs.Nsp(filename, 'rb')
-					f.open(filename, 'rb')
-					f.extract_all(ofolder,buffer)
-					f.flush()
-					f.close()
-				except BaseException as e:
-					Utils.logError(e)
-			elif test.endswith('.xci') or test.endswith('.xcz'):
-				try:
-					f = Fs.factory(filename)
-					f.open(filename, 'rb')
-					f.extract_all(ofolder,buffer)
-					f.flush()
-					f.close()
-				except BaseException as e:
-					Utils.logError(e)
+			cmdApi.extract()
 			Status.close()
 		# ...................................................
 		# Copy all NCA from NSP file
@@ -2600,248 +2545,17 @@ if __name__ == '__main__':
 		# Repack NCA files to NSP
 		# ...................................................
 		if args.create:
-			if args.buffer:
-				for input in args.buffer:
-					try:
-						buffer = input
-					except BaseException as e:
-						Utils.logError(e)
-			else:
-				buffer = 65536
-			if args.fat:
-				for input in args.fat:
-					try:
-						if input == "fat32":
-							fat="fat32"
-						else:
-							fat="exfat"
-					except BaseException as e:
-						Utils.logError(e)
-			else:
-				fat="exfat"
-			if args.fexport:
-				for input in args.fexport:
-					try:
-						if input == "files":
-							fx="files"
-						else:
-							fx="folder"
-					except BaseException as e:
-						Utils.logError(e)
-			else:
-				fx="files"
-			if args.ifolder:
-				ruta = args.ifolder
-				f_list = list()
-				ncalist = list()
-				orderlist = list()
-				for dirpath, dnames, fnames in os.walk(ruta):
-					for f in fnames:
-						if f.endswith('.cnmt.nca'):
-							try:
-								filepath = os.path.join(ruta, f)
-								nca = Fs.Nca(filepath, 'r+b')
-								ncalist=ncalist+nca.ncalist_bycnmt()
-							except BaseException as e:
-								Utils.logError(e)
-					for f in fnames:
-						filepath = os.path.join(ruta, f)
-						f_list.append(filepath)
-					for f in ncalist:
-						fpath= os.path.join(ruta, f)
-						if fpath in f_list:
-							orderlist.append(fpath)
-					for f in fnames:
-						if f.endswith('.cnmt'):
-							fpath= os.path.join(ruta, f)
-							orderlist.append(fpath)
-					for f in fnames:
-						if f.endswith('.jpg'):
-							fpath= os.path.join(ruta, f)
-							orderlist.append(fpath)
-					for f in fnames:
-						if f.endswith('.tik') or f.endswith('.cert'):
-							fpath= os.path.join(ruta, f)
-							orderlist.append(fpath)
-					nsp = Fs.Nsp(None, None)
-					nsp.path = args.create
-					nsp.pack(orderlist,buffer,fat,fx)
-					#print (f_list)
-					#print (fnames)
-					#print (ncalist)
-					#print (orderlist)
-			else:
-				nsp = Fs.Nsp(None, None)
-				nsp.path = args.create
-				nsp.pack(args.file,buffer,fat,fx)
-			#for filePath in args.file:
-			#	Print.info(filePath)
+			cmdApi.create()
 			Status.close()
 
 		# parser.add_argument('-cpr', '--compress', help='Compress a nsp or xci')
 		if args.compress:
-			if args.position:
-				try:
-					position=int(args.position)
-				except:
-					position=False
-			else:
-				position=False				
-			if args.n_instances:
-				try:
-					n_instances=int(args.n_instances)
-				except:
-					n_instances=False
-			else:
-				n_instances=False								
-			if args.nodelta:
-				for input in args.nodelta:
-					try:
-						if input == "true" or input == "True" or input == "TRUE":
-							delta=False
-						elif input == "false" or input == "False" or input == "FALSE":
-							delta=True
-						else:
-							delta=False
-					except BaseException as e:
-						Utils.logError(e)	
-			else:
-				delta=False
-			if args.fexport:
-				for input in args.fexport:
-					try:
-						if input == "nsz":
-							xci_exp="nsz"
-						elif input == "xcz":
-							xci_exp="xcz"
-						else:
-							xci_exp="xcz"
-					except BaseException as e:
-						Utils.logError(e)
-			else:
-				xci_exp="xcz"
-			if args.ofolder:		
-				for input in args.ofolder:
-					try:
-						ofolder = input
-					except BaseException as e:
-						Utils.logError(e)	
-			else:
-				for filepath in args.compress:
-					dir=os.path.dirname(os.path.abspath(filepath))
-					ofolder =os.path.join(dir, 'output')	
-			workers=0
-			if args.threads:
-				try:
-					if workers=="-1":
-						workers=-1	
-					else:	
-						workers=int(args.threads)				
-						if workers<0:
-							workers=0
-						elif workers>4:
-							workers=4
-				except:
-					workers=0			
-			if args.compress:
-				if args.text_file:
-					tfile=args.text_file
-					with open(tfile,"r+", encoding='utf8') as filelist: 	
-						filepath = filelist.readline()
-						filepath=os.path.abspath(filepath.rstrip('\n'))	
-					if isinstance(args.compress, list):
-						inputs=len(args.compress)	
-						try:
-							if inputs==1:
-								level=int(args.compress[0])			
-							elif inputs>1:
-								level=int(args.compress[(int(inputs)-1)])
-							else:
-								level=17
-						except:		
-							level=17
-					else:
-						try:
-							level=int(args.compress)
-						except:	
-							level=17
-				else:
-					if isinstance(args.compress, list):
-						filepath=args.compress[0]
-						inputs=len(args.compress)	
-						if inputs>1:
-							level=int(args.compress[(int(inputs)-1)])
-						else:
-							level=17
-					else:
-						filepath=args.compress
-						level=17
-				if filepath.endswith(".nsp") or filepath.endswith(".xci"):			
-					import compressor
-					try:
-						level=int(level)
-						if level>22:
-							level=22
-						if level<1:
-							level=1							
-					except:
-						level=17
-					if filepath.endswith(".nsp"): 	
-						compressor.compress(filepath,ofolder,level,workers,delta,pos=position,nthreads=n_instances)
-					elif filepath.endswith(".xci"):	
-						basename=os.path.basename(os.path.abspath(filepath))
-						if xci_exp=='nsz':
-							outfile=basename[:-3]+'nsz'
-							outfile =os.path.join(ofolder,outfile)	
-							nszPath=compressor.xci_to_nsz(filepath,buffer=65536,outfile=outfile,keepupd=False,level = level, threads = workers,pos=position,nthreads=n_instances)												
-							try:
-								f=Fs.Nsp(nszPath,'rb+')
-								f.seteshop()
-								f.flush()
-								f.close()
-							except:pass	
-						else:	
-							outfile=basename[:-3]+'xcz'
-							outfile =os.path.join(ofolder,outfile)							
-							compressor.supertrim_xci(filepath,buffer=65536,outfile=outfile,keepupd=False,level = level, threads = workers,pos=position,nthreads=n_instances)						
-
+			cmdApi.cpr()
+			Status.close()
 		# parser.add_argument('-dcpr', '--decompress', help='deCompress a nsz, xcz or ncz')
 		if args.decompress:
-			if args.ofolder:		
-				for input in args.ofolder:
-					try:
-						ofolder = input
-					except BaseException as e:
-						Utils.logError(e)	
-			else:
-				if type(args.decompress)==str:
-					args.decompress=[args.decompress]
-				for filepath in args.decompress:
-					dir=os.path.dirname(os.path.abspath(filepath))
-					ofolder =os.path.join(dir, 'output')
-					break
-			if args.decompress:
-				if args.text_file:
-					tfile=args.text_file
-					with open(tfile,"r+", encoding='utf8') as filelist: 	
-						filepath = filelist.readline()
-						filepath=os.path.abspath(filepath.rstrip('\n'))	
-				else:
-					for inpt in args.decompress:
-						filepath=inpt
-						break
-				if filepath.endswith(".nsz"):	
-					import decompressor	
-					basename=os.path.basename(os.path.abspath(filepath))
-					endname=basename[:-1]+'p'
-					endname =os.path.join(ofolder,endname)
-					decompressor.decompress_nsz(filepath,endname)		
-				if filepath.endswith(".xcz"):	
-					import decompressor	
-					basename=os.path.basename(os.path.abspath(filepath))
-					endname=basename[:-3]+'xci'
-					endname =os.path.join(ofolder,endname)
-					decompressor.decompress_xcz(filepath,endname)								
+			cmdApi.dcpr()
+			Status.close()								
 		# ...................................................
 		# Repack NCA files to partition hfs0
 		# ...................................................

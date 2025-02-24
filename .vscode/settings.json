@@ -1,0 +1,9 @@
+{
+    "python.analysis.extraPaths": [
+        "./py/ztools/lib",
+        "./py/ztools/Fs",
+        "./py/ztools/nutFs",
+        "./py/ztools/cmd",
+        "./py/ztools/"
+    ]
+}
