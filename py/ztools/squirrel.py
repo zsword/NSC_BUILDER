@@ -313,7 +313,7 @@ if __name__ == '__main__':
 		from Fs.pyNCA3 import NCA3
 		from shutil import disk_usage
 		
-		from cmd.Api import CmdApi
+		from cmds.Api import CmdApi
 		cmdApi = CmdApi(args)
 
 		if args.library_call:
@@ -424,19 +424,8 @@ if __name__ == '__main__':
 				args.loop=None 
 						
 # NCA/NSP IDENTIFICATION
-		# ..................................................
-		# Get titleid from nca file
-		# ..................................................
-		if args.ncatitleid:
-			for filename in args.ncatitleid:
-				try:
-					f = Fs.Nca(filename, 'rb')
-					f.printtitleId()
-					f.flush()
-					f.close()
-				except BaseException as e:
-					Utils.logError(e)
-			Status.close()
+		cmdApi.handleFsDef()
+		Status.close()
 		# ..................................................
 		# Get type from nca file
 		# ..................................................
@@ -2554,7 +2543,7 @@ if __name__ == '__main__':
 			Status.close()
 		# parser.add_argument('-dcpr', '--decompress', help='deCompress a nsz, xcz or ncz')
 		if args.decompress:
-			cmdApi.dcpr()
+			cmdApi.handleFsRepack()
 			Status.close()								
 		# ...................................................
 		# Repack NCA files to partition hfs0
