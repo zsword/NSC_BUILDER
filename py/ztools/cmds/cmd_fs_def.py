@@ -225,9 +225,7 @@ def cmd_setcgame_nca(args):
             except BaseException as e:
                 Utils.logError(e)
         Status.close()
-    # ...................................................
     # Set value for network account
-    # ...................................................
     if args.remlinkacc:
         if args.text_file:
             tfile=args.text_file

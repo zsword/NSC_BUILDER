@@ -15,22 +15,27 @@ class CmdApi(list[str]):
             if hasattr(handler, cmdname):
                 func = getattr(handler, cmdname)
                 func(args)
-
-    def handleFsDef(self):
-        import cmds.cmd_fs_def
+    def handleArgsCmds(self, handler):
         args = self.args
         for prop in dir(args):
-            self.handleCmd(cmds.cmd_fs_def, prop)
-
+            self.handleCmd(handler, prop)
+    def handleFsDef(self):
+        import cmds.cmd_fs_def as handler
+        self.handleArgsCmds(handler)
     def handleFsRepack(self):
-        import cmds.cmd_fs_repack
+        import cmds.cmd_fs_repack as handler
         args = self.args
         for prop in dir(args):
             if(prop=='joinfile'):
                 # Archive to nsp
-                cmds.cmd_fs_repack.cmd_archive(args)
-            self.handleCmd(cmds.cmd_fs_repack, prop)
-
+                handler.cmd_archive(args)
+            self.handleCmd(handler, prop)
+    def handleFsInfo(self):
+        import cmds.cmd_fs_info as handler
+        self.handleArgsCmds(handler)
+    def handleFsCopy(self):
+        import cmds.cmd_fs_copy as handler
+        self.handleArgsCmds(handler)
     def create(self):
         from cmds.cmd_fs_def import cmd_create
         cmd_create(self.args)

@@ -89,66 +89,7 @@ def cmd_create(args):
     #for filePath in args.file:
     #	Print.info(filePath)
 
-def cmd_extract(args):
-    if args.buffer:
-        for var in args.buffer:
-            try:
-                buffer = var
-            except BaseException as e:
-                Utils.logError(e)
-    else:
-        buffer = 65536
-    ofolder=False
-    if args.ofolder:
-        for input in args.ofolder:
-            try:
-                ofolder = input
-            except BaseException as e:
-                Utils.logError(e)
-    if not os.path.exists(ofolder):
-        os.makedirs(ofolder)
-    if args.text_file:
-        tfile=args.text_file
-        with open(tfile,"r+", encoding='utf8') as filelist:
-            filename = filelist.readline()
-            filename=os.path.abspath(filename.rstrip('\n'))
-            if ofolder != False:
-                dir=ofolder
-            else:
-                dir=os.path.dirname(os.path.abspath(filename))
-            basename=str(os.path.basename(os.path.abspath(filename)))
-            basename=basename[:-4]
-            ofolder =os.path.join(dir, basename)
-    else:
-        for filename in args.extract:
-            if ofolder != False:
-                dir=ofolder
-            else:
-                dir=os.path.dirname(os.path.abspath(filename))
-            basename=str(os.path.basename(os.path.abspath(filename)))
-            basename=basename[:-4]
-            ofolder =os.path.join(dir, basename)
-    if not os.path.exists(ofolder):
-        os.makedirs(ofolder)
-    test=filename.lower()
-    if test.endswith('.nsp') or test.endswith('.nsx') or test.endswith('.nsz'):
-        try:
-            f = Fs.Nsp(filename, 'rb')
-            f.open(filename, 'rb')
-            f.extract_all(ofolder,buffer)
-            f.flush()
-            f.close()
-        except BaseException as e:
-            Utils.logError(e)
-    elif test.endswith('.xci') or test.endswith('.xcz'):
-        try:
-            f = Fs.factory(filename)
-            f.open(filename, 'rb')
-            f.extract_all(ofolder,buffer)
-            f.flush()
-            f.close()
-        except BaseException as e:
-            Utils.logError(e)
+
 # parser.add_argument('-cpr', '--compress', help='Compress a nsp or xci')
 def cmd_compress(args):
     if args.text_file:

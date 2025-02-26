@@ -16,6 +16,7 @@
                 "check_files"
             ],
             "console": "integratedTerminal",
+            "preLaunchTask": "set_env",
             "justMyCode": true
         },
         {
@@ -33,7 +34,7 @@
                 "-tfile",
                 "./mlist.txt",
                 "-uin",
-                "D:/XCI",
+                "/usr/soft/NSRoms/",
                 "-ff",
                 "D:/XCI"
             ],
@@ -46,9 +47,9 @@
                 "-tfile",
                 "./mlist.txt",
                 "-uin",
-                "/usr/soft/xci",
+                "/usr/soft/NSRoms",
                 "-ff",
-                "/usr/soft/xci"
+                "/usr/soft/NSRoms"
             ],
             "console": "integratedTerminal",
             "justMyCode": true
@@ -77,7 +78,7 @@
                 "-t",
                 "xci",
                 "-o",
-                "D:\\NSCB_temp",
+                "./NSCB_temp",
                 "-tfile",
                 "./mlist.txt",
                 "-roma",
@@ -103,7 +104,7 @@
                 "-t",
                 "xci",
                 "-o",
-                "/usr/soft/NSCB_temp",
+                "./NSCB_temp",
                 "-tfile",
                 "./mlist.txt",
                 "-roma",
@@ -143,11 +144,11 @@
             "program": "squirrel.py",
             "args1": [
                 "-i",
-                "/usr/soft/xci/Burger Bistro Story 01004A30149A6000v0US.nsp"
+                "/usr/local/soft/NSRoms/Burger Bistro Story 01004A30149A6000v0US.nsp"
             ],
             "args": [
                 "-i",
-                "/usr/soft/xci/DEADCRAFT 010088F01599C800v65536.nsz"
+                "/usr/local/softs/NSRoms/WARRIORS Abyss [01005AE0209A8800][v65536].nsz"
             ],
             "console": "integratedTerminal",
             "justMyCode": true
@@ -160,11 +161,11 @@
             "program": "squirrel.py",
             "args1": [
                 "--filelist",
-                "/usr/soft/xci/Burger Bistro Story 01004A30149A6000v0US.nsp"
+                "/usr/local/soft/NSRoms/Burger Bistro Story 01004A30149A6000v0US.nsp"
             ],
             "args": [
                 "--filelist",
-                "/usr/soft/xci/DEADCRAFT 010088F01599C800v65536.nsz"
+                "/usr/soft/NSRoms/DEADCRAFT 010088F01599C800v65536.nsz"
             ],
             "console": "integratedTerminal",
             "justMyCode": true
@@ -177,7 +178,7 @@
             "program": "squirrel.py",
             "args": [
                 "-dcpr",
-                "/usr/soft/xci/DEADCRAFT 010088F01599C800v65536.nsz"
+                "/usr/local/soft/NSRoms/DEADCRAFT 010088F01599C800v65536.nsz"
             ]
         }
     ]
