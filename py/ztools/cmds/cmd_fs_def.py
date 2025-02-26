@@ -7,18 +7,57 @@ import Status
 import Print
 
 # NCA/NSP IDENTIFICATION
-def handleCmd(args):
-    # Get titleid from nca file
-    if args.ncatitleid:
-        cmd_ncatitleid(args)
-	# Get type from nca file
-    if args.ncatype:
-        cmd_ncatype(args)
-    if args.nsptitleid:
-        cmd_nsptitleid(args)
-    # Read version number from nsp or xci
-    if args.ReadversionID:
-        cmd_ReadversionID(args)
+# Get titleid from nca file
+def cmd_ncatitleid(args):
+    for filename in args.ncatitleid:
+        try:
+            f = Fs.Nca(filename, 'rb')
+            f.printtitleId()
+            f.flush()
+            f.close()
+        except BaseException as e:
+            Utils.logError(e)
+# Get type from nca file                
+def cmd_ncatype(args):
+    for filename in args.ncatype:
+        try:
+            f = Fs.Nca(filename, 'rb')
+            f.print_nca_type()
+            f.flush()
+            f.close()
+        except BaseException as e:
+            Utils.logError(e)
+# Get titleid from nsp file
+def cmd_nsptitleid(args):
+    for fileName in args.nsptitleid:
+        try:
+            f = Fs.Nsp(fileName, 'r+b')
+            titleid=f.getnspid()
+            Print.info(titleid)
+            f.flush()
+            f.close()
+        except BaseException as e:
+            Utils.logError(e)
+# Read version number from nsp or xci
+def cmd_ReadversionID(args):
+    for filename in args.ReadversionID:
+        if filename.endswith('.nsp'):
+            try:
+                f = Fs.Nsp(filename, 'rb')
+                f.get_cnmt_verID()
+                f.flush()
+                f.close()
+            except BaseException as e:
+                Utils.logError(e)
+        if filename.endswith('.xci'):
+            try:
+                f = Fs.factory(filename)
+                f.open(filename, 'rb')
+                f.get_cnmt_verID()
+                f.flush()
+                f.close()
+            except BaseException as e:
+                Utils.logError(e)                            
 # Identify type of nsp
 def cmd_nsptype(args):
     for filename in args.nsptype:
@@ -277,337 +316,3 @@ def cmd_setcgame_nca(args):
                         f.close()
         except BaseException as e:
             Utils.logError(e)
-        Status.close()            
-
-def cmd_ncatype(args):
-    for filename in args.ncatype:
-        try:
-            f = Fs.Nca(filename, 'rb')
-            f.print_nca_type()
-            f.flush()
-            f.close()
-        except BaseException as e:
-            Utils.logError(e)
-
-def cmd_nsptitleid(args):
-    for fileName in args.nsptitleid:
-        try:
-            f = Fs.Nsp(fileName, 'r+b')
-            titleid=f.getnspid()
-            Print.info(titleid)
-            f.flush()
-            f.close()
-        except BaseException as e:
-            Utils.logError(e)
-
-def cmd_ReadversionID(args):
-    for filename in args.ReadversionID:
-        if filename.endswith('.nsp'):
-            try:
-                f = Fs.Nsp(filename, 'rb')
-                f.get_cnmt_verID()
-                f.flush()
-                f.close()
-            except BaseException as e:
-                Utils.logError(e)
-        if filename.endswith('.xci'):
-            try:
-                f = Fs.factory(filename)
-                f.open(filename, 'rb')
-                f.get_cnmt_verID()
-                f.flush()
-                f.close()
-            except BaseException as e:
-                Utils.logError(e)
-
-def cmd_create(args):
-    if args.buffer:
-        for input in args.buffer:
-            try:
-                buffer = input
-            except BaseException as e:
-                Utils.logError(e)
-    else:
-        buffer = 65536
-    if args.fat:
-        for input in args.fat:
-            try:
-                if input == "fat32":
-                    fat="fat32"
-                else:
-                    fat="exfat"
-            except BaseException as e:
-                Utils.logError(e)
-    else:
-        fat="exfat"
-    if args.fexport:
-        for input in args.fexport:
-            try:
-                if input == "files":
-                    fx="files"
-                else:
-                    fx="folder"
-            except BaseException as e:
-                Utils.logError(e)
-    else:
-        fx="files"
-    if args.ifolder:
-        ruta = args.ifolder
-        f_list = list()
-        ncalist = list()
-        orderlist = list()
-        for dirpath, dnames, fnames in os.walk(ruta):
-            for f in fnames:
-                if f.endswith('.cnmt.nca'):
-                    try:
-                        filepath = os.path.join(ruta, f)
-                        nca = Fs.Nca(filepath, 'r+b')
-                        ncalist=ncalist+nca.ncalist_bycnmt()
-                    except BaseException as e:
-                        Utils.logError(e)
-            for f in fnames:
-                filepath = os.path.join(ruta, f)
-                f_list.append(filepath)
-            for f in ncalist:
-                fpath= os.path.join(ruta, f)
-                if fpath in f_list:
-                    orderlist.append(fpath)
-            for f in fnames:
-                if f.endswith('.cnmt'):
-                    fpath= os.path.join(ruta, f)
-                    orderlist.append(fpath)
-            for f in fnames:
-                if f.endswith('.jpg'):
-                    fpath= os.path.join(ruta, f)
-                    orderlist.append(fpath)
-            for f in fnames:
-                if f.endswith('.tik') or f.endswith('.cert'):
-                    fpath= os.path.join(ruta, f)
-                    orderlist.append(fpath)
-            nsp = Fs.Nsp(None, None)
-            nsp.path = args.create
-            nsp.pack(orderlist,buffer,fat,fx)
-            #print (f_list)
-            #print (fnames)
-            #print (ncalist)
-            #print (orderlist)
-    else:
-        nsp = Fs.Nsp(None, None)
-        nsp.path = args.create
-        nsp.pack(args.file,buffer,fat,fx)
-    #for filePath in args.file:
-    #	Print.info(filePath)
-    Status.close()
-
-def cmd_extract(args):
-    if args.buffer:
-        for var in args.buffer:
-            try:
-                buffer = var
-            except BaseException as e:
-                Utils.logError(e)
-    else:
-        buffer = 65536
-    ofolder=False
-    if args.ofolder:
-        for input in args.ofolder:
-            try:
-                ofolder = input
-            except BaseException as e:
-                Utils.logError(e)
-    if not os.path.exists(ofolder):
-        os.makedirs(ofolder)
-    if args.text_file:
-        tfile=args.text_file
-        with open(tfile,"r+", encoding='utf8') as filelist:
-            filename = filelist.readline()
-            filename=os.path.abspath(filename.rstrip('\n'))
-            if ofolder != False:
-                dir=ofolder
-            else:
-                dir=os.path.dirname(os.path.abspath(filename))
-            basename=str(os.path.basename(os.path.abspath(filename)))
-            basename=basename[:-4]
-            ofolder =os.path.join(dir, basename)
-    else:
-        for filename in args.extract:
-            if ofolder != False:
-                dir=ofolder
-            else:
-                dir=os.path.dirname(os.path.abspath(filename))
-            basename=str(os.path.basename(os.path.abspath(filename)))
-            basename=basename[:-4]
-            ofolder =os.path.join(dir, basename)
-    if not os.path.exists(ofolder):
-        os.makedirs(ofolder)
-    test=filename.lower()
-    if test.endswith('.nsp') or test.endswith('.nsx') or test.endswith('.nsz'):
-        try:
-            f = Fs.Nsp(filename, 'rb')
-            f.open(filename, 'rb')
-            f.extract_all(ofolder,buffer)
-            f.flush()
-            f.close()
-        except BaseException as e:
-            Utils.logError(e)
-    elif test.endswith('.xci') or test.endswith('.xcz'):
-        try:
-            f = Fs.factory(filename)
-            f.open(filename, 'rb')
-            f.extract_all(ofolder,buffer)
-            f.flush()
-            f.close()
-        except BaseException as e:
-            Utils.logError(e)
-    Status.close()    	
-
-def cmd_ncatitleid(args):
-    for filename in args.ncatitleid:
-        try:
-            f = Fs.Nca(filename, 'rb')
-            f.printtitleId()
-            f.flush()
-            f.close()
-        except BaseException as e:
-            Utils.logError(e)
-           
-def cmd_create(args):
-    if args.buffer:
-        for input in args.buffer:
-            try:
-                buffer = input
-            except BaseException as e:
-                Utils.logError(e)
-    else:
-        buffer = 65536
-    if args.fat:
-        for input in args.fat:
-            try:
-                if input == "fat32":
-                    fat="fat32"
-                else:
-                    fat="exfat"
-            except BaseException as e:
-                Utils.logError(e)
-    else:
-        fat="exfat"
-    if args.fexport:
-        for input in args.fexport:
-            try:
-                if input == "files":
-                    fx="files"
-                else:
-                    fx="folder"
-            except BaseException as e:
-                Utils.logError(e)
-    else:
-        fx="files"
-    if args.ifolder:
-        ruta = args.ifolder
-        f_list = list()
-        ncalist = list()
-        orderlist = list()
-        for dirpath, dnames, fnames in os.walk(ruta):
-            for f in fnames:
-                if f.endswith('.cnmt.nca'):
-                    try:
-                        filepath = os.path.join(ruta, f)
-                        nca = Fs.Nca(filepath, 'r+b')
-                        ncalist=ncalist+nca.ncalist_bycnmt()
-                    except BaseException as e:
-                        Utils.logError(e)
-            for f in fnames:
-                filepath = os.path.join(ruta, f)
-                f_list.append(filepath)
-            for f in ncalist:
-                fpath= os.path.join(ruta, f)
-                if fpath in f_list:
-                    orderlist.append(fpath)
-            for f in fnames:
-                if f.endswith('.cnmt'):
-                    fpath= os.path.join(ruta, f)
-                    orderlist.append(fpath)
-            for f in fnames:
-                if f.endswith('.jpg'):
-                    fpath= os.path.join(ruta, f)
-                    orderlist.append(fpath)
-            for f in fnames:
-                if f.endswith('.tik') or f.endswith('.cert'):
-                    fpath= os.path.join(ruta, f)
-                    orderlist.append(fpath)
-            nsp = Fs.Nsp(None, None)
-            nsp.path = args.create
-            nsp.pack(orderlist,buffer,fat,fx)
-            #print (f_list)
-            #print (fnames)
-            #print (ncalist)
-            #print (orderlist)
-    else:
-        nsp = Fs.Nsp(None, None)
-        nsp.path = args.create
-        nsp.pack(args.file,buffer,fat,fx)
-    #for filePath in args.file:
-    #	Print.info(filePath)
-    Status.close()
-
-def cmd_extract(args):
-    if args.buffer:
-        for var in args.buffer:
-            try:
-                buffer = var
-            except BaseException as e:
-                Utils.logError(e)
-    else:
-        buffer = 65536
-    ofolder=False
-    if args.ofolder:
-        for input in args.ofolder:
-            try:
-                ofolder = input
-            except BaseException as e:
-                Utils.logError(e)
-    if not os.path.exists(ofolder):
-        os.makedirs(ofolder)
-    if args.text_file:
-        tfile=args.text_file
-        with open(tfile,"r+", encoding='utf8') as filelist:
-            filename = filelist.readline()
-            filename=os.path.abspath(filename.rstrip('\n'))
-            if ofolder != False:
-                dir=ofolder
-            else:
-                dir=os.path.dirname(os.path.abspath(filename))
-            basename=str(os.path.basename(os.path.abspath(filename)))
-            basename=basename[:-4]
-            ofolder =os.path.join(dir, basename)
-    else:
-        for filename in args.extract:
-            if ofolder != False:
-                dir=ofolder
-            else:
-                dir=os.path.dirname(os.path.abspath(filename))
-            basename=str(os.path.basename(os.path.abspath(filename)))
-            basename=basename[:-4]
-            ofolder =os.path.join(dir, basename)
-    if not os.path.exists(ofolder):
-        os.makedirs(ofolder)
-    test=filename.lower()
-    if test.endswith('.nsp') or test.endswith('.nsx') or test.endswith('.nsz'):
-        try:
-            f = Fs.Nsp(filename, 'rb')
-            f.open(filename, 'rb')
-            f.extract_all(ofolder,buffer)
-            f.flush()
-            f.close()
-        except BaseException as e:
-            Utils.logError(e)
-    elif test.endswith('.xci') or test.endswith('.xcz'):
-        try:
-            f = Fs.factory(filename)
-            f.open(filename, 'rb')
-            f.extract_all(ofolder,buffer)
-            f.flush()
-            f.close()
-        except BaseException as e:
-            Utils.logError(e)
-    Status.close()    

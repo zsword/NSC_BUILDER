@@ -6,7 +6,7 @@ class CmdApi(list[str]):
         self.args = args
 
     def handleCmd(self, handler, cmd):
-        if cmd.startswith('__'):
+        if cmd.startswith('_'):
             return
         args = self.args
         if getattr(args, cmd):
@@ -26,6 +26,9 @@ class CmdApi(list[str]):
         import cmds.cmd_fs_repack
         args = self.args
         for prop in dir(args):
+            if(prop=='joinfile'):
+                # Archive to nsp
+                cmds.cmd_fs_repack.cmd_archive(args)
             self.handleCmd(cmds.cmd_fs_repack, prop)
 
     def create(self):
